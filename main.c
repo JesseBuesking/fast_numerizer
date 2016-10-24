@@ -1,6 +1,6 @@
-#include <sstream>
-#include <cassert>
-#include <cstdlib>
+#include <assert.h>
+#include <stdlib.h>
+
 #include "scanner.h"
 #include "parser.c"
 

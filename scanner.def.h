@@ -5,10 +5,8 @@ typedef union {
     double double_value;
 } YYSTYPE;
 
-struct ParserState {
+typedef struct {
     double result;
-    ParserState() :result(0) {
-    }
-};
+} ParserState;
 
 #endif // CALC_SCANNER_DEF_H_
