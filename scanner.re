@@ -6,60 +6,41 @@
 #include "scanner.def.h"
 #include "parser.h"
 
+/* example of how to parse string at
+ * https://github.com/skvadrik/re2c/blob/master/libre2c/examples/numscan-coupled/numscan.re
+ */
+
 /*!max:re2c*/
-static const size_t SIZE = 1024;
 
 struct input_t {
-    char buf[SIZE + YYMAXFILL];
-    char *lim;
-    char *cur;
-    char *tok;
+    size_t len;
+    char *str;
     char *mrk;
-    bool eof;
 
-    input_t()
-        : buf()
-        , lim(buf + SIZE)
-        , cur(lim)
-        , tok(lim)
+    input_t(const char *s)
+        : len(strlen(s))
+        , str(new char[len + YYMAXFILL])
         , mrk(0)
-        , eof(false)
-    {}
-
-    bool fill(size_t need)
     {
-        if (eof) {
-            return false;
-        }
-        const size_t free = tok - buf;
-        if (free < need) {
-            return false;
-        }
-        memmove(buf, tok, lim - tok);
-        lim -= free;
-        cur -= free;
-        tok -= free;
-        lim += fread(lim, 1, free, stdin);
-        if (lim < buf + SIZE) {
-            eof = true;
-            memset(lim, 0, YYMAXFILL);
-            lim += YYMAXFILL;
-        }
-        return true;
+        memcpy(str, s, len);
+        memset(str + len, 'a', YYMAXFILL);
+    }
+    ~input_t()
+    {
+        delete[]str;
     }
 };
 
-int lex(input_t & in) {
+int[] lex(input_t & input) {
+    int res[2];
 std:
-    in.tok = in.cur;
+    char *YYCURSOR = input.str;
+    char *const YYLIMIT = input.str + input.len + YYMAXFILL;
     /*!re2c
         re2c:define:YYCTYPE = char;
-        re2c:define:YYCURSOR = in.cur;
-        re2c:define:YYLIMIT = in.lim;
-        re2c:define:YYMARKER = in.mrk;
+        re2c:define:YYFILL = "return false;";
+        re2c:define:YYMARKER = input.mrk;
         re2c:define:YYFILL:naked = 1;
-        re2c:define:YYFILL@len = #;
-        re2c:define:YYFILL = "if (!in.fill(#)) { return 0; }";
 
         WS                     = [ \r\n\t\f];
         ANY_CHARACTER          = [^];
@@ -126,14 +107,13 @@ std:
 
         'half' { return TOKEN_HALF; }
 
+        ANY_CHARACTER {
+            return false;
+        }
         WS {
             goto std;
         }
-        ANY_CHARACTER {
-            printf("unexpected character: '%c(%d)'\n", *in.tok, *in.tok);
-            goto std;
-        }
-        END { return YYMAXFILL == in.lim - in.tok; }
+        END { return 0; }
     */
 }
 
