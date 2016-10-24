@@ -6,7 +6,7 @@
 
 int main() {
     YYSTYPE yylval;
-    Scanner scanner(&std::cin);
+    input_t in;
     void *pParser = ParseAlloc(malloc);
     int tokenID;
 
@@ -16,7 +16,7 @@ int main() {
 
     ParserState state;
     // scanner.scan return 0 when get EOF.
-    while (tokenID = scanner.scan(yylval)) {
+    while (tokenID = lex(in)) {
         // printf("GET TOKEN: %d\n", tokenID);
         Parse(pParser, tokenID, yylval, &state);
     }
