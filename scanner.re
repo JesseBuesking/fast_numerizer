@@ -1,47 +1,19 @@
-#ifndef CALC_SCANNER_H_
-#define CALC_SCANNER_H_
+#ifndef NUMERIZER_SCANNER_H_
+#define NUMERIZER_SCANNER_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "scanner.def.h"
 #include "parser.h"
 
-/* example of how to parse string at
- * https://github.com/skvadrik/re2c/blob/master/libre2c/examples/numscan-coupled/numscan.re
- */
+#include "libre2c/scan.h"
+#include "libre2c/readmem.h"
 
-/*!max:re2c*/
-
-struct input_t {
-    size_t len;
-    char *str;
-    char *mrk;
-
-    input_t(const char *s)
-        : len(strlen(s))
-        , str(new char[len + YYMAXFILL])
-        , mrk(0)
-    {
-        memcpy(str, s, len);
-        memset(str + len, 'a', YYMAXFILL);
-    }
-    ~input_t()
-    {
-        delete[]str;
-    }
-};
-
-int[] lex(input_t & input) {
-    int res[2];
+int numerizer_start(scanstate *ss) {
+    scanner_enter(ss);
 std:
-    char *YYCURSOR = input.str;
-    char *const YYLIMIT = input.str + input.len + YYMAXFILL;
     /*!re2c
-        re2c:define:YYCTYPE = char;
-        re2c:define:YYFILL = "return false;";
-        re2c:define:YYMARKER = input.mrk;
-        re2c:define:YYFILL:naked = 1;
-
         WS                     = [ \r\n\t\f];
         ANY_CHARACTER          = [^];
         END                    = "\x00";
@@ -107,14 +79,27 @@ std:
 
         'half' { return TOKEN_HALF; }
 
-        ANY_CHARACTER {
-            return false;
-        }
         WS {
+            printf("WS <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
+
             goto std;
+        }
+        ANY_CHARACTER {
+            printf("ANY_CHARACTER <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
+            return 0;
         }
         END { return 0; }
     */
 }
 
-#endif // CALC_SCANNER_H_
+scanstate* numerizer_attach(scanstate *ss)
+{
+	if(ss) {
+		ss->state = numerizer_start;
+		ss->line = 1;
+	}
+
+	return ss;
+}
+
+#endif // NUMERIZER_SCANNER_H_

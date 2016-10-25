@@ -1,7 +1,13 @@
+COPTS=-g
+#COPTS=-g -Wall -Werror
+
+CSRC+=$(wildcard libre2c/*.c)
+CHDR+=$(wildcard libre2c/*.h)
+
 all: fast_numerizer
 
 fast_numerizer: scanner.h parser.c
-	g++ -o fast_numerizer main.c
+	gcc -I .. $(COPTS) -o $@ $(CSRC) main.c
 
 parser.c: parser.yy
 	~/repositories/lemon/lemon parser.yy

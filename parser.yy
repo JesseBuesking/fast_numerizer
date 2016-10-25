@@ -5,7 +5,7 @@
 %extra_argument { ParserState *state }
 
 %include {
-#include <iostream>
+#include <stdio.h>
 #include "scanner.def.h"
 }
 
