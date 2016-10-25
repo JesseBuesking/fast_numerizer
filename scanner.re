@@ -80,12 +80,10 @@ std:
         'half' { return TOKEN_HALF; }
 
         WS {
-            printf("WS <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
-
             goto std;
         }
         ANY_CHARACTER {
-            printf("ANY_CHARACTER <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
+            printf("BAD INPUT: <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
             return 0;
         }
         END { return 0; }

@@ -23,17 +23,22 @@ int main() {
     readmem_init_str(&ss, data);
     ss.line = 1;
 
+#if debug
     ParseTrace(stderr, (char*)"[Parser] >> ");
+#endif
     ParserState state;
 
     do
     {
         tok = numerizer_start(&ss);
+#if debug
         printf("line %2d, token %d\n", ss.line, tok);
-        /*printf("%2d: %-12s", ss.line, tokname[tok]);*/
+#endif
 
         if(tok == 0) {
+#if debug
             printf("End of string\n");
+#endif
             break;
         }
 
@@ -42,17 +47,10 @@ int main() {
             break;
         }
 
-        /*printf("<<%.*s>>", token_length(&ss), token_start(&ss));*/
+#if debug
         printf("<<%ld %s>>\n", scan_token_length(&ss), scan_token_start(&ss));
+#endif
         Parse(pParser, tok, yylval, &state);
-
-        /*if(tok != NEWLINE) {*/
-            /*// don't want to actually print the text of the newline*/
-            /*// token -- it makes the output ugly.*/
-            /*printf("<<%.*s>>", scan_token_length(&ss),*/
-                    /*scan_token_start(&ss));*/
-        /*}*/
-        printf("\n");
     } while (tok);
 
     /*// scanner.scan return 0 when get EOF.*/
