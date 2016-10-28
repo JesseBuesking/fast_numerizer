@@ -1,3 +1,6 @@
+#ifndef READFP_H
+#define READFP_H
+
 /* readfp.h
  * Scott Bronson
  * 28 Dec 2004
@@ -17,3 +20,4 @@ scanstate* readfp_attach(scanstate *ss, FILE *fp);
 scanstate* readfp_open(const char *filename, size_t bufsiz);
 void readfp_close(scanstate *ss);
 
+#endif // READFP_H

@@ -1,3 +1,6 @@
+#ifndef READRAND_H
+#define READRAND_H
+
 /* readrand.h
  * Scott Bronson
  * 6 Mar 2006
@@ -26,3 +29,4 @@
 
 scanstate* readrand_attach(scanstate *ss, int seed);
 
+#endif // READRAND_H

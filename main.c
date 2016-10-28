@@ -1,11 +1,8 @@
-#include <assert.h>
-#include <stdlib.h>
-
 #include "scanner.h"
-#include "parser.c"
+#include "parser.h"
 
-#include "libre2c/scan.h"
-#include "libre2c/readmem.h"
+#include "scan.h"
+#include "readmem.h"
 
 int main() {
     YYSTYPE yylval;

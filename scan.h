@@ -1,3 +1,6 @@
+#ifndef SCAN_H
+#define SCAN_H
+
 /* scan.h
  * Scott Bronson
  * 27 Dec 2004
@@ -396,3 +399,4 @@ extern const char *re2c_library_version;
 
 #endif
 
+#endif // SCAN_H

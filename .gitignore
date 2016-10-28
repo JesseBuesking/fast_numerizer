@@ -3,3 +3,5 @@ parser.h
 parser.out
 scanner.h
 fast_numerizer
+*.swp
+tags

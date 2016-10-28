@@ -5,6 +5,7 @@
 %extra_argument { ParserState *state }
 
 %include {
+#include <assert.h>
 #include <stdio.h>
 #include "scanner.def.h"
 }

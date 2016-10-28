@@ -1,3 +1,6 @@
+#ifndef READMEM_H
+#define READMEM_H
+
 /* re2c-mem.c
  * Scott Bronson
  * 30 Dec 2004
@@ -20,3 +23,5 @@ scanstate* readmem_attach(scanstate *ss, const char *data, size_t len);
  */
 
 #define readmem_init_str(ss,str) readmem_init(ss,str,strlen(str))
+
+#endif // READMEM_H

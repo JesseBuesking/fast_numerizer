@@ -1,3 +1,6 @@
+#ifndef SCAN_DYN_H
+#define SCAN_DYN_H
+
 /* scan-dyn.h
  * Scott Bronson
  * 30 Dec 2004
@@ -15,3 +18,4 @@
 scanstate* dynscan_create(size_t bufsiz);
 void dynscan_free(scanstate *ss);
 
+#endif // SCAN_DYN_H

@@ -1,3 +1,6 @@
+#ifndef READFD_H
+#define READFD_H
+
 /* readfd.h
  * Scott Bronson
  * 30 Dec 2004
@@ -44,3 +47,4 @@ scanstate* readfd_open(const char *path, size_t bufsiz);
 
 void readfd_close(scanstate *ss);
 
+#endif // READFD_H

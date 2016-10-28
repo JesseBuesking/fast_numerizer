@@ -1,5 +1,5 @@
-#ifndef CALC_SCANNER_DEF_H_
-#define CALC_SCANNER_DEF_H_
+#ifndef SCANNER_DEF_H
+#define SCANNER_DEF_H
 
 typedef union {
     double double_value;
@@ -9,4 +9,4 @@ typedef struct {
     double result;
 } ParserState;
 
-#endif // CALC_SCANNER_DEF_H_
+#endif // SCANNER_DEF_H

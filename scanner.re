@@ -7,8 +7,8 @@
 #include "scanner.def.h"
 #include "parser.h"
 
-#include "libre2c/scan.h"
-#include "libre2c/readmem.h"
+#include "scan.h"
+#include "readmem.h"
 
 int numerizer_start(scanstate *ss) {
     scanner_enter(ss);
@@ -90,6 +90,7 @@ std:
     */
 }
 
+/*
 scanstate* numerizer_attach(scanstate *ss)
 {
 	if(ss) {
@@ -99,5 +100,6 @@ scanstate* numerizer_attach(scanstate *ss)
 
 	return ss;
 }
+*/
 
 #endif // NUMERIZER_SCANNER_H_
