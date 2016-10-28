@@ -20,7 +20,7 @@ FAST_NUMERIZER_LD=$(CC) $(FINAL_LDFLAGS)
 CSRC=parser.c read.c readfd.c readfp.c readmem.c readrand.c scan.c scan-dyn.c
 CHDR=read.h readfd.h readfp.h readmem.h readrand.h scan.h scan-dyn.h
 
-FAST_NUMERIZER_OBJ=scan.o readmem.o main.o
+FAST_NUMERIZER_OBJ=fast_numerizer.o scan.o readmem.o main.o
 
 %.o: %.c
 	$(FAST_NUMERIZER_CC) -c $<
