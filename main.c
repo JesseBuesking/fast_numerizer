@@ -50,11 +50,6 @@ int main() {
         Parse(pParser, tok, yylval, &state);
     } while (tok);
 
-    /*// scanner.scan return 0 when get EOF.*/
-    /*while (tok = numerizer_start(in)) {*/
-        /*// printf("GET TOKEN: %d\n", tok);*/
-        /*Parse(pParser, tok, yylval, &state);*/
-    /*}*/
     Parse(pParser, 0, yylval, &state);
     ParseFree(pParser, free);
 
