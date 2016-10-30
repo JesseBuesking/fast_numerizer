@@ -1,6 +1,8 @@
 #ifndef FAST_NUMERIZER_H
 #define FAST_NUMERIZER_H
 
+#include "scanner.h"
+#include "parser.h"
 #include "scan.h"
 #include "readmem.h"
 

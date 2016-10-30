@@ -2,9 +2,12 @@ parser.c
 parser.h
 parser.out
 scanner.h
+scanner.c
 fast_numerizer
 
 tags
 
 *.swp
 *.o
+
+*.gch

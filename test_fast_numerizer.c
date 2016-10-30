@@ -1,17 +1,17 @@
-#include "test_fast_numerizer.h"
+#if defined (__cplusplus)
+extern "C" {
+#endif
+
+#include "fast_numerizer.h"
+
+#if defined (__cplusplus)
+}
+#endif
+
+#include "gtest/gtest.h"
 
 using ::testing::InitGoogleTest;
 
-TEST(numerizer, simple) {
-    EXPECT_EQ(1, 1);
-}
-
-TEST(numerizer, doingsomething) {
+TEST(numerizer, simple_tests_work) {
     EXPECT_EQ(100.0, numerize("one hundred"));
-}
-
-int main(int argc, char **argv) {
-  InitGoogleTest(&argc, argv);
-
-  return RUN_ALL_TESTS();
 }

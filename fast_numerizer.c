@@ -1,8 +1,5 @@
 #include "fast_numerizer.h"
 
-#include "scanner.h"
-#include "parser.h"
-
 double numerize(const char *data) {
     YYSTYPE yylval;
 

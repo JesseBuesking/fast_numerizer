@@ -1,6 +1,3 @@
-#ifndef READ_H
-#define READ_H
-
 /* read.h
  * Scott Bronson
  * 27 Dec 2004
@@ -31,5 +28,3 @@
 ssize_t read_shiftbuf(scanstate *ss);
 
 #endif
-
-#endif // READ_H
