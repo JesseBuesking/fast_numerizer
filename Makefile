@@ -33,6 +33,8 @@ CHDR=read.h readfd.h readfp.h readmem.h readrand.h scan.h scan-dyn.h
 FAST_NUMERIZER_OBJ=parser.o scan.o readmem.o fast_numerizer.o scanner.o
 DEPS=parser.h scan.h readmem.h fast_numerizer.h scanner.h
 
+TEST_FILES=test_basic.yaml
+
 %.o: %.c $(DEPS)
 	$(FAST_NUMERIZER_CC) -c $<
 
@@ -58,13 +60,13 @@ clean:
 
 .PHONY: all clean
 
-test_fast_numerizer.o: parser.h scan.h readmem.h fast_numerizer.h scanner.h
-	$(CXX) -I$(GTEST_DIR)/include -c test_fast_numerizer.c
+test_fast_numerizer.o: parser.h scan.h readmem.h fast_numerizer.h scanner.h test_fast_numerizer.c
+	$(CXX) -std=c++11 -L/usr/local/include -I$(GTEST_DIR)/include -c test_fast_numerizer.c -lyaml-cpp
 
 test_fast_numerizer: $(FAST_NUMERIZER_OBJ) $(GTEST_DIR)/make/gtest_main.a test_fast_numerizer.o
-	$(CXX) -o $@ -I$(GTEST_DIR)/include -I. $^ -pthread
+	$(CXX) -std=c++11 -L/usr/local/include -o $@ -I$(GTEST_DIR)/include -I. $^ -pthread -lyaml-cpp
 
-test: all test_fast_numerizer
+test: all test_fast_numerizer $(TEST_FILES)
 	./test_fast_numerizer
 
 valgrind:
