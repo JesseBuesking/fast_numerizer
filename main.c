@@ -1,12 +1,13 @@
 #include "fast_numerizer.h"
 
 int main() {
-    double result;
-    /*const char *data = "one quarter";*/
     const char *data = "fifteen thousand";
+    ParserState state;
+    state.precision = 3;
 
-    result = numerize(data);
+    numerize(data, &state);
 
-    printf("RESULT: %f\n", result);
+    printf("RESULT: %s\n", state.result);
+    sdsfree(state.result);
     return 0;
 }

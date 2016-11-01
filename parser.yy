@@ -7,7 +7,9 @@
 %include {
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "scanner.def.h"
+#include "sds.h"
 }
 
 %syntax_error {
@@ -21,7 +23,8 @@
 %start_symbol program
 
 program ::= expr(A). {
-    state->result = A.double_value;
+    state->result = sdscatprintf(sdsempty(), "%.*lf", state->precision, A.double_value);
+    state->result = sdsRemoveFreeSpace(state->result);
 }
 
 /*expr(A) ::= direct_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }*/

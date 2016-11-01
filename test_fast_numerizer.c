@@ -1,7 +1,6 @@
 #if defined (__cplusplus)
 extern "C" {
 #endif
-
 #include "fast_numerizer.h"
 #if defined (__cplusplus)
 }
@@ -19,7 +18,8 @@ using ::testing::InitGoogleTest;
 
 struct TestCase {
     std::string input;
-    double expect;
+    std::string expect;
+    int precision;
 };
 
 std::ostream& operator << (std::ostream &o, const TestCase &test_case) {
@@ -29,13 +29,23 @@ std::ostream& operator << (std::ostream &o, const TestCase &test_case) {
 
 void operator >> (const YAML::Node& node, TestCase& test_case) {
     test_case.input = node[0].as<std::string>();
-    test_case.expect = node[1].as<double>();
+    test_case.expect = node[1].as<std::string>();
+    test_case.precision = node[2].as<int>();
 }
 
 class FastNumerizer : public testing::TestWithParam<TestCase> {};
 
 TEST_P(FastNumerizer, numerize) {
-   EXPECT_EQ(GetParam().expect, numerize(GetParam().input.c_str()));
+    ParserState state;
+    state.precision = GetParam().precision;
+    const char* input = GetParam().input.c_str();
+    const char* expect = GetParam().expect.c_str();
+
+    numerize(input, &state);
+
+    ASSERT_TRUE(strcmp(expect, state.result) == 0) << "expected \"" << expect << "\" given \"" << input << "\", actual \"" << state.result << "\"\n";
+
+    sdsfree(state.result);
 }
 
 std::vector<TestCase> ReadTestCasesFromDisk(std::string filename) {

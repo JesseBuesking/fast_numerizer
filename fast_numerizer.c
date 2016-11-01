@@ -1,6 +1,6 @@
 #include "fast_numerizer.h"
 
-double numerize(const char *data) {
+void numerize(const char *data, ParserState *state) {
     YYSTYPE yylval;
 
     scanstate ss;
@@ -17,7 +17,6 @@ double numerize(const char *data) {
 #if debug
     ParseTrace(stderr, (char*)"[Parser] >> ");
 #endif
-    ParserState state;
 
     do
     {
@@ -41,11 +40,9 @@ double numerize(const char *data) {
 #if debug
         printf("<<%ld %s>>\n", scan_token_length(&ss), scan_token_start(&ss));
 #endif
-        Parse(pParser, tok, yylval, &state);
+        Parse(pParser, tok, yylval, state);
     } while (tok);
 
-    Parse(pParser, 0, yylval, &state);
+    Parse(pParser, 0, yylval, state);
     ParseFree(pParser, free);
-
-    return state.result;
 }
