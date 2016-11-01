@@ -3,7 +3,6 @@ extern "C" {
 #endif
 
 #include "fast_numerizer.h"
-
 #if defined (__cplusplus)
 }
 #endif
@@ -20,23 +19,23 @@ using ::testing::InitGoogleTest;
 
 struct TestCase {
     std::string input;
-    double expected;
+    double expect;
 };
 
 std::ostream& operator << (std::ostream &o, const TestCase &test_case) {
-    o << "<TestCase(input=\"" << test_case.input << "\", expected=\"" << test_case.expected << "\")>";
+    o << "<TestCase(input=\"" << test_case.input << "\", expect=\"" << test_case.expect << "\")>";
     return o;
 }
 
 void operator >> (const YAML::Node& node, TestCase& test_case) {
-    test_case.input = node["input"].as<std::string>();
-    test_case.expected = node["expected"].as<double>();
+    test_case.input = node[0].as<std::string>();
+    test_case.expect = node[1].as<double>();
 }
 
 class FastNumerizer : public testing::TestWithParam<TestCase> {};
 
 TEST_P(FastNumerizer, numerize) {
-   EXPECT_EQ(GetParam().expected, numerize(GetParam().input.c_str()));
+   EXPECT_EQ(GetParam().expect, numerize(GetParam().input.c_str()));
 }
 
 std::vector<TestCase> ReadTestCasesFromDisk(std::string filename) {

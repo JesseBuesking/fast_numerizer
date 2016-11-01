@@ -1,4 +1,2 @@
-- input: one hundred
-  expected: 100.0
-- input: one thousand
-  expected: 1000.0
+- ["one hundred", 100.0]
+- ["one thousand", 1000.0]
