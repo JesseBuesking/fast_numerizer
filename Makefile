@@ -56,7 +56,7 @@ scanner.c: scanner.re
 	$(RE2C) -o $@ scanner.re
 
 clean:
-	rm -rf *.o parser.h parser.out parser.c scanner.o scanner.c main.o fast_numerizer
+	rm -rf *.o parser.h parser.out parser.c scanner.o scanner.c main.o fast_numerizer *.gch test_fast_numerizer
 
 .PHONY: all clean
 
