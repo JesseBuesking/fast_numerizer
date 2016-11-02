@@ -2,6 +2,7 @@
 extern "C" {
 #endif
 #include "fast_numerizer.h"
+#include "num-fmt.h"
 #if defined (__cplusplus)
 }
 #endif
@@ -38,6 +39,7 @@ class FastNumerizer : public testing::TestWithParam<TestCase> {};
 TEST_P(FastNumerizer, numerize) {
     ParserState state;
     state.precision = GetParam().precision;
+
     const char* input = GetParam().input.c_str();
     const char* expect = GetParam().expect.c_str();
 
@@ -65,3 +67,9 @@ INSTANTIATE_TEST_CASE_P(
     Tests,
     FastNumerizer,
     testing::ValuesIn(ReadTestCasesFromDisk("test_basic.yaml")));
+
+TEST(MorphStringTest, HandlesTrailingZeros) {
+    sds s = sdsnew("12.000");
+    morphNumericString(s, 3);
+    ASSERT_TRUE(strcmp("12", s) == 0) << "12 != " << s << "\n";
+}

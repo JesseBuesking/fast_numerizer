@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "scanner.def.h"
 #include "sds.h"
+#include "num-fmt.h"
 }
 
 %syntax_error {
@@ -23,7 +24,8 @@
 %start_symbol program
 
 program ::= expr(A). {
-    state->result = sdscatprintf(sdsempty(), "%.*lf", state->precision, A.double_value);
+    state->result = sdsnewlen("", 1024); // TODO stop specifying buffer
+    doubleToString(state->result, A.double_value, state->precision);
     state->result = sdsRemoveFreeSpace(state->result);
 }
 
