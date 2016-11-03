@@ -29,10 +29,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "scanner.def.h"
 #include "sds.h"
 #include "num-fmt.h"
-#line 36 "parser.c"
+#line 37 "parser.c"
 /**************** End of %include directives **********************************/
 /* These constants specify the various numeric values for terminal symbols
 ** in a format understandable to "makeheaders".  This section is blank unless
@@ -92,7 +93,7 @@
 #endif
 /************* Begin control #defines *****************************************/
 #define YYCODETYPE unsigned char
-#define YYNOCODE 53
+#define YYNOCODE 59
 #define YYACTIONTYPE unsigned char
 #define ParseTOKENTYPE  YYSTYPE 
 typedef union {
@@ -106,16 +107,16 @@ typedef union {
 #define ParseARG_PDECL , ParserState *state 
 #define ParseARG_FETCH  ParserState *state  = yypParser->state 
 #define ParseARG_STORE yypParser->state  = state 
-#define YYNSTATE             5
-#define YYNRULE              54
-#define YY_MAX_SHIFT         4
-#define YY_MIN_SHIFTREDUCE   55
-#define YY_MAX_SHIFTREDUCE   108
-#define YY_MIN_REDUCE        109
-#define YY_MAX_REDUCE        162
-#define YY_ERROR_ACTION      163
-#define YY_ACCEPT_ACTION     164
-#define YY_NO_ACTION         165
+#define YYNSTATE             12
+#define YYNRULE              73
+#define YY_MAX_SHIFT         11
+#define YY_MIN_SHIFTREDUCE   79
+#define YY_MAX_SHIFTREDUCE   151
+#define YY_MIN_REDUCE        152
+#define YY_MAX_REDUCE        224
+#define YY_ERROR_ACTION      225
+#define YY_ACCEPT_ACTION     226
+#define YY_NO_ACTION         227
 /************* End control #defines *******************************************/
 
 /* Define the yytestcase() macro to be a no-op if is not already defined
@@ -187,45 +188,72 @@ typedef union {
 **  yy_default[]       Default action for each state.
 **
 *********** Begin parsing tables **********************************************/
-#define YY_ACTTAB_COUNT (81)
+#define YY_ACTTAB_COUNT (205)
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */    66,   67,   68,   69,   70,   71,   72,   73,   74,   75,
- /*    10 */    76,   77,   78,   79,   80,   81,   82,   83,   84,   85,
- /*    20 */    86,   87,   88,   89,   90,   91,   92,   93,   94,   95,
- /*    30 */    96,   97,   98,   66,   67,   68,   69,   70,   71,   72,
- /*    40 */    73,   74,   94,   95,   96,   97,   98,   99,  100,  101,
- /*    50 */   102,  103,  104,  105,  106,  107,  108,  164,    4,    3,
- /*    60 */   109,    2,    1,   63,   61,   60,   99,  100,  101,  102,
- /*    70 */   103,  104,  105,  106,  107,  108,   57,   56,  111,   64,
- /*    80 */    65,
+ /*     0 */   105,  106,  107,  108,  109,  110,  111,  112,  113,  114,
+ /*    10 */   115,  116,  117,  118,  119,  120,  121,  122,  123,  124,
+ /*    20 */   125,  126,  127,  128,  129,  130,  131,  132,  133,  134,
+ /*    30 */   135,  136,  137,  138,  139,  140,  141,  142,  143,  144,
+ /*    40 */   145,  146,  147,  148,  149,  151,  107,  108,  109,  110,
+ /*    50 */   111,  112,  113,  114,  115,  116,  117,  118,  119,  120,
+ /*    60 */   121,  122,  123,  124,  125,  126,  127,  128,  129,  130,
+ /*    70 */   131,  132,  133,  134,  135,  136,  137,  138,  139,  140,
+ /*    80 */   141,  142,  143,  144,  145,  146,  147,  148,  149,  150,
+ /*    90 */   107,  108,  109,  110,  111,  112,  113,  114,  115,  116,
+ /*   100 */   117,  118,  119,  120,  121,  122,  123,  124,  125,  126,
+ /*   110 */   127,  128,  129,  130,  131,  132,  133,  134,   92,   84,
+ /*   120 */    94,   10,   96,  140,  141,  142,  143,  144,  145,  146,
+ /*   130 */   147,  148,  149,  107,  108,  109,  110,  111,  112,  113,
+ /*   140 */   114,  115,  105,  106,  107,  108,  109,  110,  111,  112,
+ /*   150 */   113,  114,  115,  226,   11,   80,    7,    2,    6,    5,
+ /*   160 */    97,    1,  105,  106,   87,    3,  140,  141,  142,  143,
+ /*   170 */   144,  145,  146,  147,  148,  149,  103,  100,   86,  101,
+ /*   180 */   102,  104,   88,   98,  135,  136,  137,  138,  139,   83,
+ /*   190 */    82,    8,  135,  136,  137,  138,  139,   85,   81,    4,
+ /*   200 */     9,   89,  105,  106,  152,
 };
 static const YYCODETYPE yy_lookahead[] = {
  /*     0 */     1,    2,    3,    4,    5,    6,    7,    8,    9,   10,
  /*    10 */    11,   12,   13,   14,   15,   16,   17,   18,   19,   20,
  /*    20 */    21,   22,   23,   24,   25,   26,   27,   28,   29,   30,
- /*    30 */    31,   32,   33,    1,    2,    3,    4,    5,    6,    7,
- /*    40 */     8,    9,   29,   30,   31,   32,   33,   34,   35,   36,
- /*    50 */    37,   38,   39,   40,   41,   42,   43,   45,   46,   47,
- /*    60 */     0,   49,   50,   51,   48,   49,   34,   35,   36,   37,
- /*    70 */    38,   39,   40,   41,   42,   43,   48,   48,   52,   51,
- /*    80 */    51,
+ /*    30 */    31,   32,   33,   34,   35,   36,   37,   38,   39,   40,
+ /*    40 */    41,   42,   43,   44,   45,   46,    3,    4,    5,    6,
+ /*    50 */     7,    8,    9,   10,   11,   12,   13,   14,   15,   16,
+ /*    60 */    17,   18,   19,   20,   21,   22,   23,   24,   25,   26,
+ /*    70 */    27,   28,   29,   30,   31,   32,   33,   34,   35,   36,
+ /*    80 */    37,   38,   39,   40,   41,   42,   43,   44,   45,   46,
+ /*    90 */     3,    4,    5,    6,    7,    8,    9,   10,   11,   12,
+ /*   100 */    13,   14,   15,   16,   17,   18,   19,   20,   21,   22,
+ /*   110 */    23,   24,   25,   26,   27,   28,   29,   30,   51,   50,
+ /*   120 */    53,   54,   55,   36,   37,   38,   39,   40,   41,   42,
+ /*   130 */    43,   44,   45,    3,    4,    5,    6,    7,    8,    9,
+ /*   140 */    10,   11,    1,    2,    3,    4,    5,    6,    7,    8,
+ /*   150 */     9,   10,   11,   48,   49,   50,   51,   52,   53,   54,
+ /*   160 */    55,   56,    1,    2,   51,   52,   36,   37,   38,   39,
+ /*   170 */    40,   41,   42,   43,   44,   45,   50,   51,   51,   53,
+ /*   180 */    54,   55,   55,   57,   31,   32,   33,   34,   35,   50,
+ /*   190 */    50,   52,   31,   32,   33,   34,   35,   51,   50,   52,
+ /*   200 */    52,   55,    1,    2,    0,
 };
-#define YY_SHIFT_USE_DFLT (81)
-#define YY_SHIFT_COUNT    (4)
+#define YY_SHIFT_USE_DFLT (205)
+#define YY_SHIFT_COUNT    (11)
 #define YY_SHIFT_MIN      (-1)
-#define YY_SHIFT_MAX      (60)
-static const signed char yy_shift_ofst[] = {
- /*     0 */    -1,   32,   13,   13,   60,
+#define YY_SHIFT_MAX      (204)
+static const short yy_shift_ofst[] = {
+ /*     0 */    -1,   43,   87,  130,  130,  141,  161,  161,  153,  153,
+ /*    10 */   201,  204,
 };
 #define YY_REDUCE_USE_DFLT (-1)
-#define YY_REDUCE_COUNT (3)
+#define YY_REDUCE_COUNT (10)
 #define YY_REDUCE_MIN   (0)
-#define YY_REDUCE_MAX   (29)
-static const signed char yy_reduce_ofst[] = {
- /*     0 */    12,   16,   28,   29,
+#define YY_REDUCE_MAX   (148)
+static const short yy_reduce_ofst[] = {
+ /*     0 */   105,  126,   67,  127,  146,  113,  139,  148,   69,  140,
+ /*    10 */   147,
 };
 static const YYACTIONTYPE yy_default[] = {
- /*     0 */   163,  116,  113,  112,  163,
+ /*     0 */   225,  172,  225,  225,  225,  164,  168,  166,  225,  225,
+ /*    10 */   163,  225,
 };
 /********** End of lemon-generated parsing tables *****************************/
 
@@ -330,19 +358,21 @@ void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
 /* For tracing shifts, the names of all terminals and nonterminals
 ** are required.  The following table supplies these names */
 static const char *const yyTokenName[] = { 
-  "$",             "ONE",           "TWO",           "THREE",       
-  "FOUR",          "FIVE",          "SIX",           "SEVEN",       
-  "EIGHT",         "NINE",          "ZERO",          "TEN",         
-  "ELEVEN",        "TWELVE",        "THIRTEEN",      "FOURTEEN",    
-  "FIFTEEN",       "SIXTEEN",       "SEVENTEEN",     "EIGHTEEN",    
-  "NINETEEN",      "TWENTY",        "THIRTY",        "FORTY",       
-  "FIFTY",         "SIXTY",         "SEVENTY",       "EIGHTY",      
-  "NINETY",        "HUNDRED",       "THOUSAND",      "MILLION",     
-  "BILLION",       "TRILLION",      "FIRST",         "THIRD",       
-  "FOURTH",        "FIFTH",         "SIXTH",         "SEVENTH",     
-  "EIGHTH",        "NINTH",         "HALF",          "QUARTER",     
-  "error",         "program",       "expr",          "direct_num",  
-  "single_ordinal",  "single_num",    "ten_prefix",    "big_prefix",  
+  "$",             "WHITESPACE",    "HYPHEN",        "ONE",         
+  "TWO",           "THREE",         "FOUR",          "FIVE",        
+  "SIX",           "SEVEN",         "EIGHT",         "NINE",        
+  "ZERO",          "TEN",           "ELEVEN",        "TWELVE",      
+  "THIRTEEN",      "FOURTEEN",      "FIFTEEN",       "SIXTEEN",     
+  "SEVENTEEN",     "EIGHTEEN",      "NINETEEN",      "TWENTY",      
+  "THIRTY",        "FORTY",         "FIFTY",         "SIXTY",       
+  "SEVENTY",       "EIGHTY",        "NINETY",        "HUNDRED",     
+  "THOUSAND",      "MILLION",       "BILLION",       "TRILLION",    
+  "FIRST",         "THIRD",         "FOURTH",        "FIFTH",       
+  "SIXTH",         "SEVENTH",       "EIGHTH",        "NINTH",       
+  "HALF",          "QUARTER",       "CHARACTER",     "error",       
+  "program",       "expr",          "big_prefix",    "single_num",  
+  "separator",     "direct_num",    "ten_prefix",    "single_ordinal",
+  "identifier",    "any_token",   
 };
 #endif /* NDEBUG */
 
@@ -351,59 +381,78 @@ static const char *const yyTokenName[] = {
 */
 static const char *const yyRuleName[] = {
  /*   0 */ "program ::= expr",
- /*   1 */ "expr ::= direct_num single_ordinal",
- /*   2 */ "expr ::= single_num single_ordinal",
- /*   3 */ "expr ::= direct_num",
- /*   4 */ "expr ::= single_num",
- /*   5 */ "expr ::= ten_prefix single_num",
- /*   6 */ "expr ::= ten_prefix single_ordinal",
- /*   7 */ "expr ::= ten_prefix",
- /*   8 */ "expr ::= big_prefix",
- /*   9 */ "expr ::= single_num big_prefix",
- /*  10 */ "expr ::= direct_num big_prefix",
- /*  11 */ "single_num ::= ONE",
- /*  12 */ "single_num ::= TWO",
- /*  13 */ "single_num ::= THREE",
- /*  14 */ "single_num ::= FOUR",
- /*  15 */ "single_num ::= FIVE",
- /*  16 */ "single_num ::= SIX",
- /*  17 */ "single_num ::= SEVEN",
- /*  18 */ "single_num ::= EIGHT",
- /*  19 */ "single_num ::= NINE",
- /*  20 */ "direct_num ::= ZERO",
- /*  21 */ "direct_num ::= TEN",
- /*  22 */ "direct_num ::= ELEVEN",
- /*  23 */ "direct_num ::= TWELVE",
- /*  24 */ "direct_num ::= THIRTEEN",
- /*  25 */ "direct_num ::= FOURTEEN",
- /*  26 */ "direct_num ::= FIFTEEN",
- /*  27 */ "direct_num ::= SIXTEEN",
- /*  28 */ "direct_num ::= SEVENTEEN",
- /*  29 */ "direct_num ::= EIGHTEEN",
- /*  30 */ "direct_num ::= NINETEEN",
- /*  31 */ "ten_prefix ::= TWENTY",
- /*  32 */ "ten_prefix ::= THIRTY",
- /*  33 */ "ten_prefix ::= FORTY",
- /*  34 */ "ten_prefix ::= FIFTY",
- /*  35 */ "ten_prefix ::= SIXTY",
- /*  36 */ "ten_prefix ::= SEVENTY",
- /*  37 */ "ten_prefix ::= EIGHTY",
- /*  38 */ "ten_prefix ::= NINETY",
- /*  39 */ "big_prefix ::= HUNDRED",
- /*  40 */ "big_prefix ::= THOUSAND",
- /*  41 */ "big_prefix ::= MILLION",
- /*  42 */ "big_prefix ::= BILLION",
- /*  43 */ "big_prefix ::= TRILLION",
- /*  44 */ "single_ordinal ::= FIRST",
- /*  45 */ "single_ordinal ::= THIRD",
- /*  46 */ "single_ordinal ::= FOURTH",
- /*  47 */ "single_ordinal ::= FIFTH",
- /*  48 */ "single_ordinal ::= SIXTH",
- /*  49 */ "single_ordinal ::= SEVENTH",
- /*  50 */ "single_ordinal ::= EIGHTH",
- /*  51 */ "single_ordinal ::= NINTH",
- /*  52 */ "single_ordinal ::= HALF",
- /*  53 */ "single_ordinal ::= QUARTER",
+ /*   1 */ "expr ::= big_prefix",
+ /*   2 */ "expr ::= single_num big_prefix",
+ /*   3 */ "expr ::= single_num separator big_prefix",
+ /*   4 */ "expr ::= direct_num big_prefix",
+ /*   5 */ "expr ::= direct_num separator big_prefix",
+ /*   6 */ "expr ::= separator ten_prefix separator single_num",
+ /*   7 */ "expr ::= ten_prefix separator single_num",
+ /*   8 */ "expr ::= ten_prefix single_num",
+ /*   9 */ "expr ::= ten_prefix separator single_ordinal",
+ /*  10 */ "expr ::= separator ten_prefix separator single_ordinal",
+ /*  11 */ "expr ::= separator ten_prefix",
+ /*  12 */ "expr ::= ten_prefix",
+ /*  13 */ "expr ::= separator single_num",
+ /*  14 */ "expr ::= single_num",
+ /*  15 */ "expr ::= separator direct_num",
+ /*  16 */ "expr ::= direct_num",
+ /*  17 */ "expr ::= separator single_ordinal",
+ /*  18 */ "expr ::= single_ordinal",
+ /*  19 */ "expr ::= identifier any_token",
+ /*  20 */ "expr ::= identifier",
+ /*  21 */ "any_token ::= single_num",
+ /*  22 */ "any_token ::= direct_num",
+ /*  23 */ "any_token ::= ten_prefix",
+ /*  24 */ "any_token ::= big_prefix",
+ /*  25 */ "any_token ::= single_ordinal",
+ /*  26 */ "separator ::= WHITESPACE",
+ /*  27 */ "separator ::= HYPHEN",
+ /*  28 */ "single_num ::= ONE",
+ /*  29 */ "single_num ::= TWO",
+ /*  30 */ "single_num ::= THREE",
+ /*  31 */ "single_num ::= FOUR",
+ /*  32 */ "single_num ::= FIVE",
+ /*  33 */ "single_num ::= SIX",
+ /*  34 */ "single_num ::= SEVEN",
+ /*  35 */ "single_num ::= EIGHT",
+ /*  36 */ "single_num ::= NINE",
+ /*  37 */ "direct_num ::= ZERO",
+ /*  38 */ "direct_num ::= TEN",
+ /*  39 */ "direct_num ::= ELEVEN",
+ /*  40 */ "direct_num ::= TWELVE",
+ /*  41 */ "direct_num ::= THIRTEEN",
+ /*  42 */ "direct_num ::= FOURTEEN",
+ /*  43 */ "direct_num ::= FIFTEEN",
+ /*  44 */ "direct_num ::= SIXTEEN",
+ /*  45 */ "direct_num ::= SEVENTEEN",
+ /*  46 */ "direct_num ::= EIGHTEEN",
+ /*  47 */ "direct_num ::= NINETEEN",
+ /*  48 */ "ten_prefix ::= TWENTY",
+ /*  49 */ "ten_prefix ::= THIRTY",
+ /*  50 */ "ten_prefix ::= FORTY",
+ /*  51 */ "ten_prefix ::= FIFTY",
+ /*  52 */ "ten_prefix ::= SIXTY",
+ /*  53 */ "ten_prefix ::= SEVENTY",
+ /*  54 */ "ten_prefix ::= EIGHTY",
+ /*  55 */ "ten_prefix ::= NINETY",
+ /*  56 */ "big_prefix ::= HUNDRED",
+ /*  57 */ "big_prefix ::= THOUSAND",
+ /*  58 */ "big_prefix ::= MILLION",
+ /*  59 */ "big_prefix ::= BILLION",
+ /*  60 */ "big_prefix ::= TRILLION",
+ /*  61 */ "single_ordinal ::= FIRST",
+ /*  62 */ "single_ordinal ::= THIRD",
+ /*  63 */ "single_ordinal ::= FOURTH",
+ /*  64 */ "single_ordinal ::= FIFTH",
+ /*  65 */ "single_ordinal ::= SIXTH",
+ /*  66 */ "single_ordinal ::= SEVENTH",
+ /*  67 */ "single_ordinal ::= EIGHTH",
+ /*  68 */ "single_ordinal ::= NINTH",
+ /*  69 */ "single_ordinal ::= HALF",
+ /*  70 */ "single_ordinal ::= QUARTER",
+ /*  71 */ "identifier ::= identifier CHARACTER",
+ /*  72 */ "identifier ::= CHARACTER",
 };
 #endif /* NDEBUG */
 
@@ -752,60 +801,79 @@ static const struct {
   YYCODETYPE lhs;         /* Symbol on the left-hand side of the rule */
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
-  { 45, 1 },
-  { 46, 2 },
-  { 46, 2 },
-  { 46, 1 },
-  { 46, 1 },
-  { 46, 2 },
-  { 46, 2 },
-  { 46, 1 },
-  { 46, 1 },
-  { 46, 2 },
-  { 46, 2 },
+  { 48, 1 },
   { 49, 1 },
+  { 49, 2 },
+  { 49, 3 },
+  { 49, 2 },
+  { 49, 3 },
+  { 49, 4 },
+  { 49, 3 },
+  { 49, 2 },
+  { 49, 3 },
+  { 49, 4 },
+  { 49, 2 },
   { 49, 1 },
+  { 49, 2 },
   { 49, 1 },
+  { 49, 2 },
   { 49, 1 },
+  { 49, 2 },
   { 49, 1 },
+  { 49, 2 },
   { 49, 1 },
-  { 49, 1 },
-  { 49, 1 },
-  { 49, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 47, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
-  { 50, 1 },
+  { 57, 1 },
+  { 57, 1 },
+  { 57, 1 },
+  { 57, 1 },
+  { 57, 1 },
+  { 52, 1 },
+  { 52, 1 },
   { 51, 1 },
   { 51, 1 },
   { 51, 1 },
   { 51, 1 },
   { 51, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
-  { 48, 1 },
+  { 51, 1 },
+  { 51, 1 },
+  { 51, 1 },
+  { 51, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 53, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 54, 1 },
+  { 50, 1 },
+  { 50, 1 },
+  { 50, 1 },
+  { 50, 1 },
+  { 50, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 55, 1 },
+  { 56, 2 },
+  { 56, 1 },
 };
 
 static void yy_accept(yyParser*);  /* Forward Declaration */
@@ -870,218 +938,371 @@ static void yy_reduce(
 /********** Begin reduce actions **********************************************/
         YYMINORTYPE yylhsminor;
       case 0: /* program ::= expr */
-#line 26 "parser.yy"
+#line 27 "parser.yy"
 {
-    state->result = sdsnewlen("", 1024); // TODO stop specifying buffer
-    doubleToString(state->result, yymsp[0].minor.yy0.double_value, state->precision);
-    state->result = sdsRemoveFreeSpace(state->result);
+    if (yymsp[0].minor.yy0.value != NULL) {
+        state->result = yymsp[0].minor.yy0.value;
+    } else {
+        state->result = sdsnewlen("", 1024); // TODO stop specifying buffer
+        doubleToString(state->result, yymsp[0].minor.yy0.double_value, state->precision);
+
+        state->result = sdsRemoveFreeSpace(state->result);
+
+        if (yymsp[0].minor.yy0.has_suffix) {
+            sds tmp = sdscpy(sdsempty(), state->result);
+            /*sdsfree(state->result);*/
+            /*state->result = sdscatsds(tmp, yymsp[0].minor.yy0.suffix);*/
+            /*sdsfree(yymsp[0].minor.yy0.suffix);*/
+        }
+
+        state->result = sdsRemoveFreeSpace(state->result);
+    }
 }
-#line 880 "parser.c"
+#line 962 "parser.c"
         break;
-      case 1: /* expr ::= direct_num single_ordinal */
-      case 2: /* expr ::= single_num single_ordinal */ yytestcase(yyruleno==2);
-#line 35 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value / yymsp[0].minor.yy0.double_value; }
-#line 886 "parser.c"
-  yymsp[-1].minor.yy0 = yylhsminor.yy0;
-        break;
-      case 3: /* expr ::= direct_num */
-      case 4: /* expr ::= single_num */ yytestcase(yyruleno==4);
-      case 7: /* expr ::= ten_prefix */ yytestcase(yyruleno==7);
-      case 8: /* expr ::= big_prefix */ yytestcase(yyruleno==8);
-#line 38 "parser.yy"
+      case 1: /* expr ::= big_prefix */
+      case 12: /* expr ::= ten_prefix */ yytestcase(yyruleno==12);
+      case 14: /* expr ::= single_num */ yytestcase(yyruleno==14);
+      case 16: /* expr ::= direct_num */ yytestcase(yyruleno==16);
+      case 18: /* expr ::= single_ordinal */ yytestcase(yyruleno==18);
+#line 47 "parser.yy"
 { yylhsminor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
-#line 895 "parser.c"
+#line 971 "parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 5: /* expr ::= ten_prefix single_num */
-      case 6: /* expr ::= ten_prefix single_ordinal */ yytestcase(yyruleno==6);
-#line 43 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
-#line 902 "parser.c"
-  yymsp[-1].minor.yy0 = yylhsminor.yy0;
-        break;
-      case 9: /* expr ::= single_num big_prefix */
-      case 10: /* expr ::= direct_num big_prefix */ yytestcase(yyruleno==10);
+      case 2: /* expr ::= single_num big_prefix */
+      case 4: /* expr ::= direct_num big_prefix */ yytestcase(yyruleno==4);
 #line 48 "parser.yy"
 { yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * yymsp[0].minor.yy0.double_value; }
-#line 909 "parser.c"
+#line 978 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
-      case 11: /* single_num ::= ONE */
-      case 44: /* single_ordinal ::= FIRST */ yytestcase(yyruleno==44);
-#line 51 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1.0; }
-#line 916 "parser.c"
-        break;
-      case 12: /* single_num ::= TWO */
-      case 52: /* single_ordinal ::= HALF */ yytestcase(yyruleno==52);
-#line 52 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 2.0; }
-#line 922 "parser.c"
-        break;
-      case 13: /* single_num ::= THREE */
-      case 45: /* single_ordinal ::= THIRD */ yytestcase(yyruleno==45);
-#line 53 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 3.0; }
-#line 928 "parser.c"
-        break;
-      case 14: /* single_num ::= FOUR */
-      case 46: /* single_ordinal ::= FOURTH */ yytestcase(yyruleno==46);
-      case 53: /* single_ordinal ::= QUARTER */ yytestcase(yyruleno==53);
-#line 54 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 4.0; }
-#line 935 "parser.c"
-        break;
-      case 15: /* single_num ::= FIVE */
-      case 47: /* single_ordinal ::= FIFTH */ yytestcase(yyruleno==47);
-#line 55 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 5.0; }
-#line 941 "parser.c"
-        break;
-      case 16: /* single_num ::= SIX */
-      case 48: /* single_ordinal ::= SIXTH */ yytestcase(yyruleno==48);
-#line 56 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 6.0; }
-#line 947 "parser.c"
-        break;
-      case 17: /* single_num ::= SEVEN */
-      case 49: /* single_ordinal ::= SEVENTH */ yytestcase(yyruleno==49);
-#line 57 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 7.0; }
-#line 953 "parser.c"
-        break;
-      case 18: /* single_num ::= EIGHT */
-      case 50: /* single_ordinal ::= EIGHTH */ yytestcase(yyruleno==50);
-#line 58 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 8.0; }
-#line 959 "parser.c"
-        break;
-      case 19: /* single_num ::= NINE */
-      case 51: /* single_ordinal ::= NINTH */ yytestcase(yyruleno==51);
-#line 59 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 9.0; }
-#line 965 "parser.c"
-        break;
-      case 20: /* direct_num ::= ZERO */
-#line 61 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 0.0; }
-#line 970 "parser.c"
-        break;
-      case 21: /* direct_num ::= TEN */
-#line 62 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 10.0; }
-#line 975 "parser.c"
-        break;
-      case 22: /* direct_num ::= ELEVEN */
-#line 63 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 11.0; }
-#line 980 "parser.c"
-        break;
-      case 23: /* direct_num ::= TWELVE */
-#line 64 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 12.0; }
+      case 3: /* expr ::= single_num separator big_prefix */
+      case 5: /* expr ::= direct_num separator big_prefix */ yytestcase(yyruleno==5);
+#line 49 "parser.yy"
+{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value * yymsp[0].minor.yy0.double_value; }
 #line 985 "parser.c"
+  yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
-      case 24: /* direct_num ::= THIRTEEN */
-#line 65 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 13.0; }
-#line 990 "parser.c"
+      case 6: /* expr ::= separator ten_prefix separator single_num */
+      case 10: /* expr ::= separator ten_prefix separator single_ordinal */ yytestcase(yyruleno==10);
+#line 53 "parser.yy"
+{ yymsp[-3].minor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
+#line 992 "parser.c"
         break;
-      case 25: /* direct_num ::= FOURTEEN */
-#line 66 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 14.0; }
-#line 995 "parser.c"
+      case 7: /* expr ::= ten_prefix separator single_num */
+      case 9: /* expr ::= ten_prefix separator single_ordinal */ yytestcase(yyruleno==9);
+#line 54 "parser.yy"
+{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
+#line 998 "parser.c"
+  yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
-      case 26: /* direct_num ::= FIFTEEN */
-#line 67 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 15.0; }
-#line 1000 "parser.c"
+      case 8: /* expr ::= ten_prefix single_num */
+#line 55 "parser.yy"
+{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
+#line 1004 "parser.c"
+  yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
-      case 27: /* direct_num ::= SIXTEEN */
-#line 68 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 16.0; }
-#line 1005 "parser.c"
+      case 11: /* expr ::= separator ten_prefix */
+      case 13: /* expr ::= separator single_num */ yytestcase(yyruleno==13);
+      case 15: /* expr ::= separator direct_num */ yytestcase(yyruleno==15);
+      case 17: /* expr ::= separator single_ordinal */ yytestcase(yyruleno==17);
+#line 59 "parser.yy"
+{ yymsp[-1].minor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
+#line 1013 "parser.c"
         break;
-      case 28: /* direct_num ::= SEVENTEEN */
-#line 69 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 17.0; }
-#line 1010 "parser.c"
-        break;
-      case 29: /* direct_num ::= EIGHTEEN */
-#line 70 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 18.0; }
-#line 1015 "parser.c"
-        break;
-      case 30: /* direct_num ::= NINETEEN */
-#line 71 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 19.0; }
-#line 1020 "parser.c"
-        break;
-      case 31: /* ten_prefix ::= TWENTY */
+      case 19: /* expr ::= identifier any_token */
+      case 71: /* identifier ::= identifier CHARACTER */ yytestcase(yyruleno==71);
 #line 73 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 20.0; }
+{
+    yymsp[-1].minor.yy0.value = sdscat(yymsp[-1].minor.yy0.value, yymsp[0].minor.yy0.value);
+    sdsfree(yymsp[0].minor.yy0.value);
+    yylhsminor.yy0.value = sdsempty();
+    yylhsminor.yy0.value = sdscat(yylhsminor.yy0.value, yymsp[-1].minor.yy0.value);
+    sdsfree(yymsp[-1].minor.yy0.value);
+}
 #line 1025 "parser.c"
+  yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
-      case 32: /* ten_prefix ::= THIRTY */
-#line 74 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 30.0; }
-#line 1030 "parser.c"
+      case 20: /* expr ::= identifier */
+#line 81 "parser.yy"
+{
+    if (yymsp[0].minor.yy0.value == NULL) {
+        printf("yymsp[0].minor.yy0.value is NULL");
+    } else {
+        yylhsminor.yy0.value = yymsp[0].minor.yy0.value;
+        printf("identifer(yylhsminor.yy0): %s\n", yylhsminor.yy0.value);
+    }
+}
+#line 1038 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 33: /* ten_prefix ::= FORTY */
-#line 75 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 40.0; }
-#line 1035 "parser.c"
-        break;
-      case 34: /* ten_prefix ::= FIFTY */
-#line 76 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 50.0; }
-#line 1040 "parser.c"
-        break;
-      case 35: /* ten_prefix ::= SIXTY */
-#line 77 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 60.0; }
-#line 1045 "parser.c"
-        break;
-      case 36: /* ten_prefix ::= SEVENTY */
-#line 78 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 70.0; }
+      case 21: /* any_token ::= single_num */
+      case 22: /* any_token ::= direct_num */ yytestcase(yyruleno==22);
+      case 23: /* any_token ::= ten_prefix */ yytestcase(yyruleno==23);
+      case 24: /* any_token ::= big_prefix */ yytestcase(yyruleno==24);
+      case 25: /* any_token ::= single_ordinal */ yytestcase(yyruleno==25);
+      case 26: /* separator ::= WHITESPACE */ yytestcase(yyruleno==26);
+      case 27: /* separator ::= HYPHEN */ yytestcase(yyruleno==27);
+#line 90 "parser.yy"
+{}
 #line 1050 "parser.c"
         break;
-      case 37: /* ten_prefix ::= EIGHTY */
-#line 79 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 80.0; }
+      case 28: /* single_num ::= ONE */
+#line 99 "parser.yy"
+{ yylhsminor.yy0.double_value = 1.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
 #line 1055 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 38: /* ten_prefix ::= NINETY */
-#line 80 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 90.0; }
-#line 1060 "parser.c"
+      case 29: /* single_num ::= TWO */
+      case 69: /* single_ordinal ::= HALF */ yytestcase(yyruleno==69);
+#line 100 "parser.yy"
+{ yylhsminor.yy0.double_value = 2.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1062 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 39: /* big_prefix ::= HUNDRED */
-#line 82 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 100.0; }
-#line 1065 "parser.c"
+      case 30: /* single_num ::= THREE */
+#line 101 "parser.yy"
+{ yylhsminor.yy0.double_value = 3.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1068 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 40: /* big_prefix ::= THOUSAND */
-#line 83 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000.0; }
-#line 1070 "parser.c"
-        break;
-      case 41: /* big_prefix ::= MILLION */
-#line 84 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000.0; }
+      case 31: /* single_num ::= FOUR */
+      case 70: /* single_ordinal ::= QUARTER */ yytestcase(yyruleno==70);
+#line 102 "parser.yy"
+{ yylhsminor.yy0.double_value = 4.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
 #line 1075 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 42: /* big_prefix ::= BILLION */
-#line 85 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000.0; }
-#line 1080 "parser.c"
+      case 32: /* single_num ::= FIVE */
+#line 103 "parser.yy"
+{ yylhsminor.yy0.double_value = 5.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1081 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 43: /* big_prefix ::= TRILLION */
-#line 86 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000000.0; }
-#line 1085 "parser.c"
+      case 33: /* single_num ::= SIX */
+#line 104 "parser.yy"
+{ yylhsminor.yy0.double_value = 6.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1087 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 34: /* single_num ::= SEVEN */
+#line 105 "parser.yy"
+{ yylhsminor.yy0.double_value = 7.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1093 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 35: /* single_num ::= EIGHT */
+#line 106 "parser.yy"
+{ yylhsminor.yy0.double_value = 8.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1099 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 36: /* single_num ::= NINE */
+#line 107 "parser.yy"
+{ yylhsminor.yy0.double_value = 9.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1105 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 37: /* direct_num ::= ZERO */
+#line 109 "parser.yy"
+{ yylhsminor.yy0.double_value = 0.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1111 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 38: /* direct_num ::= TEN */
+#line 110 "parser.yy"
+{ yylhsminor.yy0.double_value = 10.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1117 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 39: /* direct_num ::= ELEVEN */
+#line 111 "parser.yy"
+{ yylhsminor.yy0.double_value = 11.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1123 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 40: /* direct_num ::= TWELVE */
+#line 112 "parser.yy"
+{ yylhsminor.yy0.double_value = 12.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1129 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 41: /* direct_num ::= THIRTEEN */
+#line 113 "parser.yy"
+{ yylhsminor.yy0.double_value = 13.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1135 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 42: /* direct_num ::= FOURTEEN */
+#line 114 "parser.yy"
+{ yylhsminor.yy0.double_value = 14.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1141 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 43: /* direct_num ::= FIFTEEN */
+#line 115 "parser.yy"
+{ yylhsminor.yy0.double_value = 15.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1147 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 44: /* direct_num ::= SIXTEEN */
+#line 116 "parser.yy"
+{ yylhsminor.yy0.double_value = 16.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1153 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 45: /* direct_num ::= SEVENTEEN */
+#line 117 "parser.yy"
+{ yylhsminor.yy0.double_value = 17.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1159 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 46: /* direct_num ::= EIGHTEEN */
+#line 118 "parser.yy"
+{ yylhsminor.yy0.double_value = 18.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1165 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 47: /* direct_num ::= NINETEEN */
+#line 119 "parser.yy"
+{ yylhsminor.yy0.double_value = 19.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1171 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 48: /* ten_prefix ::= TWENTY */
+#line 121 "parser.yy"
+{ yylhsminor.yy0.double_value = 20.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1177 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 49: /* ten_prefix ::= THIRTY */
+#line 122 "parser.yy"
+{ yylhsminor.yy0.double_value = 30.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1183 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 50: /* ten_prefix ::= FORTY */
+#line 123 "parser.yy"
+{ yylhsminor.yy0.double_value = 40.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1189 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 51: /* ten_prefix ::= FIFTY */
+#line 124 "parser.yy"
+{ yylhsminor.yy0.double_value = 50.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1195 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 52: /* ten_prefix ::= SIXTY */
+#line 125 "parser.yy"
+{ yylhsminor.yy0.double_value = 60.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1201 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 53: /* ten_prefix ::= SEVENTY */
+#line 126 "parser.yy"
+{ yylhsminor.yy0.double_value = 70.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1207 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 54: /* ten_prefix ::= EIGHTY */
+#line 127 "parser.yy"
+{ yylhsminor.yy0.double_value = 80.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1213 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 55: /* ten_prefix ::= NINETY */
+#line 128 "parser.yy"
+{ yylhsminor.yy0.double_value = 90.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1219 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 56: /* big_prefix ::= HUNDRED */
+#line 130 "parser.yy"
+{ yylhsminor.yy0.double_value = 100.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1225 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 57: /* big_prefix ::= THOUSAND */
+#line 131 "parser.yy"
+{ yylhsminor.yy0.double_value = 1000.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1231 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 58: /* big_prefix ::= MILLION */
+#line 132 "parser.yy"
+{ yylhsminor.yy0.double_value = 1000000.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1237 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 59: /* big_prefix ::= BILLION */
+#line 133 "parser.yy"
+{ yylhsminor.yy0.double_value = 1000000000.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1243 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 60: /* big_prefix ::= TRILLION */
+#line 134 "parser.yy"
+{ yylhsminor.yy0.double_value = 1000000000000.0; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1249 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 61: /* single_ordinal ::= FIRST */
+#line 136 "parser.yy"
+{ yylhsminor.yy0.double_value = 1.0; yylhsminor.yy0.suffix = sdsnew("st"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1255 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 62: /* single_ordinal ::= THIRD */
+#line 137 "parser.yy"
+{ yylhsminor.yy0.double_value = 3.0; yylhsminor.yy0.suffix = sdsnew("nd"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1261 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 63: /* single_ordinal ::= FOURTH */
+#line 138 "parser.yy"
+{ yylhsminor.yy0.double_value = 4.0; yylhsminor.yy0.suffix = sdsnew("rd"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1267 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 64: /* single_ordinal ::= FIFTH */
+#line 139 "parser.yy"
+{ yylhsminor.yy0.double_value = 5.0; yylhsminor.yy0.suffix = sdsnew("th"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1273 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 65: /* single_ordinal ::= SIXTH */
+#line 140 "parser.yy"
+{ yylhsminor.yy0.double_value = 6.0; yylhsminor.yy0.suffix = sdsnew("th"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1279 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 66: /* single_ordinal ::= SEVENTH */
+#line 141 "parser.yy"
+{ yylhsminor.yy0.double_value = 7.0; yylhsminor.yy0.suffix = sdsnew("th"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1285 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 67: /* single_ordinal ::= EIGHTH */
+#line 142 "parser.yy"
+{ yylhsminor.yy0.double_value = 8.0; yylhsminor.yy0.suffix = sdsnew("th"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1291 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 68: /* single_ordinal ::= NINTH */
+#line 143 "parser.yy"
+{ yylhsminor.yy0.double_value = 9.0; yylhsminor.yy0.suffix = sdsnew("th"); yylhsminor.yy0.has_suffix = true; yylhsminor.yy0.value = yymsp[0].minor.yy0.value; }
+#line 1297 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
+        break;
+      case 72: /* identifier ::= CHARACTER */
+#line 156 "parser.yy"
+{
+    yylhsminor.yy0.value = yymsp[0].minor.yy0.value;
+}
+#line 1305 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       default:
         break;
@@ -1124,10 +1345,10 @@ static void yy_parse_failed(
   /* Here code is inserted which will be executed whenever the
   ** parser fails */
 /************ Begin %parse_failure code ***************************************/
-#line 20 "parser.yy"
+#line 21 "parser.yy"
 
     fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-#line 1131 "parser.c"
+#line 1352 "parser.c"
 /************ End %parse_failure code *****************************************/
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
@@ -1144,10 +1365,10 @@ static void yy_syntax_error(
   ParseARG_FETCH;
 #define TOKEN yyminor
 /************ Begin %syntax_error code ****************************************/
-#line 16 "parser.yy"
+#line 17 "parser.yy"
 
     fprintf(stderr, "Syntax error\n");
-#line 1151 "parser.c"
+#line 1372 "parser.c"
 /************ End %syntax_error code ******************************************/
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }

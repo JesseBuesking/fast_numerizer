@@ -5,11 +5,10 @@
 
 int numerizer_start(scanstate *ss) {
     scanner_enter(ss);
-std:
     /*!re2c
-        WS                     = [ \r\n\t\f];
-        ANY_CHARACTER          = [^];
-        END                    = "\x00";
+        WS       = [ \r\n\t\f];
+        ANY_CHAR = [^];
+        END      = "\x00";
 
         'zero' { return TOKEN_ZERO; }
         'one' { return TOKEN_ONE; }
@@ -72,14 +71,12 @@ std:
 
         'half' { return TOKEN_HALF; }
 
-        WS {
-            goto std;
-        }
-        ANY_CHARACTER {
-            printf("BAD INPUT: <<%ld %s>>\n", scan_token_length(ss), scan_token_start(ss));
-            return 0;
-        }
+        WS { return TOKEN_WHITESPACE; }
+        '-' { return TOKEN_HYPHEN; }
+
         END { return 0; }
+
+        ANY_CHAR { return TOKEN_CHARACTER; }
     */
 }
 

@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "scanner.def.h"
 #include "sds.h"
 #include "num-fmt.h"
@@ -24,75 +25,134 @@
 %start_symbol program
 
 program ::= expr(A). {
-    state->result = sdsnewlen("", 1024); // TODO stop specifying buffer
-    doubleToString(state->result, A.double_value, state->precision);
-    state->result = sdsRemoveFreeSpace(state->result);
+    if (A.value != NULL) {
+        state->result = A.value;
+    } else {
+        state->result = sdsnewlen("", 1024); // TODO stop specifying buffer
+        doubleToString(state->result, A.double_value, state->precision);
+
+        state->result = sdsRemoveFreeSpace(state->result);
+
+        if (A.has_suffix) {
+            sds tmp = sdscpy(sdsempty(), state->result);
+            /*sdsfree(state->result);*/
+            /*state->result = sdscatsds(tmp, A.suffix);*/
+            /*sdsfree(A.suffix);*/
+        }
+
+        state->result = sdsRemoveFreeSpace(state->result);
+    }
 }
-
-/*expr(A) ::= direct_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }*/
-/*expr(A) ::= single_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }*/
-
-expr(A) ::= direct_num(B) single_ordinal(C). { A.double_value = B.double_value / C.double_value; }
-expr(A) ::= single_num(B) single_ordinal(C). { A.double_value = B.double_value / C.double_value; }
-
-expr(A) ::= direct_num(B). { A.double_value = B.double_value; }
-expr(A) ::= single_num(B). { A.double_value = B.double_value; }
-
-/*expr(A) ::= ten_prefix(B) single_num(C) big_prefix(D). { A.double_value = (B.double_value + C.double_value) * D.double_value; }*/
-
-expr(A) ::= ten_prefix(B) single_num(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= ten_prefix(B) single_ordinal(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }
 
 expr(A) ::= big_prefix(B). { A.double_value = B.double_value; }
 expr(A) ::= single_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }
+expr(A) ::= single_num(B) separator big_prefix(C). { A.double_value = B.double_value * C.double_value; }
 expr(A) ::= direct_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }
+expr(A) ::= direct_num(B) separator big_prefix(C). { A.double_value = B.double_value * C.double_value; }
 
-single_num(A) ::= ONE. { A.double_value = 1.0; }
-single_num(A) ::= TWO. { A.double_value = 2.0; }
-single_num(A) ::= THREE. { A.double_value = 3.0; }
-single_num(A) ::= FOUR. { A.double_value = 4.0; }
-single_num(A) ::= FIVE. { A.double_value = 5.0; }
-single_num(A) ::= SIX. { A.double_value = 6.0; }
-single_num(A) ::= SEVEN. { A.double_value = 7.0; }
-single_num(A) ::= EIGHT. { A.double_value = 8.0; }
-single_num(A) ::= NINE. { A.double_value = 9.0; }
+expr(A) ::= separator ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; }
+expr(A) ::= ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; }
+expr(A) ::= ten_prefix(B) single_num(C). { A.double_value = B.double_value + C.double_value; }
+expr(A) ::= ten_prefix(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; }
+expr(A) ::= separator ten_prefix(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; }
 
-direct_num(A) ::= ZERO. { A.double_value = 0.0; }
-direct_num(A) ::= TEN. { A.double_value = 10.0; }
-direct_num(A) ::= ELEVEN. { A.double_value = 11.0; }
-direct_num(A) ::= TWELVE. { A.double_value = 12.0; }
-direct_num(A) ::= THIRTEEN. { A.double_value = 13.0; }
-direct_num(A) ::= FOURTEEN. { A.double_value = 14.0; }
-direct_num(A) ::= FIFTEEN. { A.double_value = 15.0; }
-direct_num(A) ::= SIXTEEN. { A.double_value = 16.0; }
-direct_num(A) ::= SEVENTEEN. { A.double_value = 17.0; }
-direct_num(A) ::= EIGHTEEN. { A.double_value = 18.0; }
-direct_num(A) ::= NINETEEN. { A.double_value = 19.0; }
+expr(A) ::= separator ten_prefix(B). { A.double_value = B.double_value; }
+expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }
 
-ten_prefix(A) ::= TWENTY. { A.double_value = 20.0; }
-ten_prefix(A) ::= THIRTY. { A.double_value = 30.0; }
-ten_prefix(A) ::= FORTY. { A.double_value = 40.0; }
-ten_prefix(A) ::= FIFTY. { A.double_value = 50.0; }
-ten_prefix(A) ::= SIXTY. { A.double_value = 60.0; }
-ten_prefix(A) ::= SEVENTY. { A.double_value = 70.0; }
-ten_prefix(A) ::= EIGHTY. { A.double_value = 80.0; }
-ten_prefix(A) ::= NINETY. { A.double_value = 90.0; }
+expr(A) ::= separator single_num(B). { A.double_value = B.double_value; }
+expr(A) ::= single_num(B). { A.double_value = B.double_value; }
 
-big_prefix(A) ::= HUNDRED. { A.double_value = 100.0; }
-big_prefix(A) ::= THOUSAND. { A.double_value = 1000.0; }
-big_prefix(A) ::= MILLION. { A.double_value = 1000000.0; }
-big_prefix(A) ::= BILLION. { A.double_value = 1000000000.0; }
-big_prefix(A) ::= TRILLION. { A.double_value = 1000000000000.0; }
+expr(A) ::= separator direct_num(B). { A.double_value = B.double_value; }
+expr(A) ::= direct_num(B). { A.double_value = B.double_value; }
 
-single_ordinal(A) ::= FIRST. { A.double_value = 1.0; }
-single_ordinal(A) ::= THIRD. { A.double_value = 3.0; }
-single_ordinal(A) ::= FOURTH. { A.double_value = 4.0; }
-single_ordinal(A) ::= FIFTH. { A.double_value = 5.0; }
-single_ordinal(A) ::= SIXTH. { A.double_value = 6.0; }
-single_ordinal(A) ::= SEVENTH. { A.double_value = 7.0; }
-single_ordinal(A) ::= EIGHTH. { A.double_value = 8.0; }
-single_ordinal(A) ::= NINTH. { A.double_value = 9.0; }
+expr(A) ::= separator single_ordinal(B). { A.double_value = B.double_value; }
+expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }
 
-single_ordinal(A) ::= HALF. { A.double_value = 2.0; }
-single_ordinal(A) ::= QUARTER. { A.double_value = 4.0; }
+/*expr ::= separator identifier separator. {}*/
+
+expr(A) ::= identifier(B) any_token(C). {
+    B.value = sdscat(B.value, C.value);
+    sdsfree(C.value);
+    A.value = sdsempty();
+    A.value = sdscat(A.value, B.value);
+    sdsfree(B.value);
+}
+
+expr(A) ::= identifier(B). {
+    if (B.value == NULL) {
+        printf("B.value is NULL");
+    } else {
+        A.value = B.value;
+        printf("identifer(A): %s\n", A.value);
+    }
+}
+
+any_token ::= single_num. {}
+any_token ::= direct_num. {}
+any_token ::= ten_prefix. {}
+any_token ::= big_prefix. {}
+any_token ::= single_ordinal. {}
+
+separator ::= WHITESPACE. {}
+separator ::= HYPHEN. {}
+
+single_num(A) ::= ONE(B). { A.double_value = 1.0; A.value = B.value; }
+single_num(A) ::= TWO(B). { A.double_value = 2.0; A.value = B.value; }
+single_num(A) ::= THREE(B). { A.double_value = 3.0; A.value = B.value; }
+single_num(A) ::= FOUR(B). { A.double_value = 4.0; A.value = B.value; }
+single_num(A) ::= FIVE(B). { A.double_value = 5.0; A.value = B.value; }
+single_num(A) ::= SIX(B). { A.double_value = 6.0; A.value = B.value; }
+single_num(A) ::= SEVEN(B). { A.double_value = 7.0; A.value = B.value; }
+single_num(A) ::= EIGHT(B). { A.double_value = 8.0; A.value = B.value; }
+single_num(A) ::= NINE(B). { A.double_value = 9.0; A.value = B.value; }
+
+direct_num(A) ::= ZERO(B). { A.double_value = 0.0; A.value = B.value; }
+direct_num(A) ::= TEN(B). { A.double_value = 10.0; A.value = B.value; }
+direct_num(A) ::= ELEVEN(B). { A.double_value = 11.0; A.value = B.value; }
+direct_num(A) ::= TWELVE(B). { A.double_value = 12.0; A.value = B.value; }
+direct_num(A) ::= THIRTEEN(B). { A.double_value = 13.0; A.value = B.value; }
+direct_num(A) ::= FOURTEEN(B). { A.double_value = 14.0; A.value = B.value; }
+direct_num(A) ::= FIFTEEN(B). { A.double_value = 15.0; A.value = B.value; }
+direct_num(A) ::= SIXTEEN(B). { A.double_value = 16.0; A.value = B.value; }
+direct_num(A) ::= SEVENTEEN(B). { A.double_value = 17.0; A.value = B.value; }
+direct_num(A) ::= EIGHTEEN(B). { A.double_value = 18.0; A.value = B.value; }
+direct_num(A) ::= NINETEEN(B). { A.double_value = 19.0; A.value = B.value; }
+
+ten_prefix(A) ::= TWENTY(B). { A.double_value = 20.0; A.value = B.value; }
+ten_prefix(A) ::= THIRTY(B). { A.double_value = 30.0; A.value = B.value; }
+ten_prefix(A) ::= FORTY(B). { A.double_value = 40.0; A.value = B.value; }
+ten_prefix(A) ::= FIFTY(B). { A.double_value = 50.0; A.value = B.value; }
+ten_prefix(A) ::= SIXTY(B). { A.double_value = 60.0; A.value = B.value; }
+ten_prefix(A) ::= SEVENTY(B). { A.double_value = 70.0; A.value = B.value; }
+ten_prefix(A) ::= EIGHTY(B). { A.double_value = 80.0; A.value = B.value; }
+ten_prefix(A) ::= NINETY(B). { A.double_value = 90.0; A.value = B.value; }
+
+big_prefix(A) ::= HUNDRED(B). { A.double_value = 100.0; A.value = B.value; }
+big_prefix(A) ::= THOUSAND(B). { A.double_value = 1000.0; A.value = B.value; }
+big_prefix(A) ::= MILLION(B). { A.double_value = 1000000.0; A.value = B.value; }
+big_prefix(A) ::= BILLION(B). { A.double_value = 1000000000.0; A.value = B.value; }
+big_prefix(A) ::= TRILLION(B). { A.double_value = 1000000000000.0; A.value = B.value; }
+
+single_ordinal(A) ::= FIRST(B). { A.double_value = 1.0; A.suffix = sdsnew("st"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= THIRD(B). { A.double_value = 3.0; A.suffix = sdsnew("nd"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= FOURTH(B). { A.double_value = 4.0; A.suffix = sdsnew("rd"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= FIFTH(B). { A.double_value = 5.0; A.suffix = sdsnew("th"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= SIXTH(B). { A.double_value = 6.0; A.suffix = sdsnew("th"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= SEVENTH(B). { A.double_value = 7.0; A.suffix = sdsnew("th"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= EIGHTH(B). { A.double_value = 8.0; A.suffix = sdsnew("th"); A.has_suffix = true; A.value = B.value; }
+single_ordinal(A) ::= NINTH(B). { A.double_value = 9.0; A.suffix = sdsnew("th"); A.has_suffix = true; A.value = B.value; }
+
+single_ordinal(A) ::= HALF(B). { A.double_value = 2.0; A.value = B.value; }
+single_ordinal(A) ::= QUARTER(B). { A.double_value = 4.0; A.value = B.value; }
+
+identifier(A) ::= identifier(B) CHARACTER(C). {
+    B.value = sdscat(B.value, C.value);
+    sdsfree(C.value);
+    A.value = sdsempty();
+    A.value = sdscat(A.value, B.value);
+    sdsfree(B.value);
+}
+
+identifier(A) ::= CHARACTER(B). {
+    A.value = B.value;
+}

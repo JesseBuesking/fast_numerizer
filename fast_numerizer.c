@@ -25,21 +25,25 @@ void numerize(const char *data, ParserState *state) {
         printf("line %2d, token %d\n", ss.line, tok);
 #endif
 
-        if(tok == 0) {
+        if (tok == 0) {
 #if debug
             printf("End of string\n");
 #endif
             break;
         }
 
-        if(tok < 0) {
+        if (tok < 0) {
             printf("Scanner returned an error: %d\n", tok);
             break;
         }
 
+        // set the underlying value
+        yylval.value = sdsnewlen(ss.token, scan_token_length(&ss));
+
 #if debug
-        printf("<<%ld %s>>\n", scan_token_length(&ss), scan_token_start(&ss));
+        printf("token is \"%s\"\n", yylval.value);
 #endif
+
         Parse(pParser, tok, yylval, state);
     } while (tok);
 
