@@ -44,31 +44,7 @@ program ::= expr(A). {
     }
 }
 
-expr(A) ::= big_prefix(B). { A.double_value = B.double_value; }
-expr(A) ::= single_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }
-expr(A) ::= single_num(B) separator big_prefix(C). { A.double_value = B.double_value * C.double_value; }
-expr(A) ::= direct_num(B) big_prefix(C). { A.double_value = B.double_value * C.double_value; }
-expr(A) ::= direct_num(B) separator big_prefix(C). { A.double_value = B.double_value * C.double_value; }
-
-expr(A) ::= separator ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= ten_prefix(B) single_num(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= ten_prefix(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; }
-expr(A) ::= separator ten_prefix(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; }
-
-expr(A) ::= separator ten_prefix(B). { A.double_value = B.double_value; }
-expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }
-
-expr(A) ::= separator single_num(B). { A.double_value = B.double_value; }
-expr(A) ::= single_num(B). { A.double_value = B.double_value; }
-
-expr(A) ::= separator direct_num(B). { A.double_value = B.double_value; }
-expr(A) ::= direct_num(B). { A.double_value = B.double_value; }
-
-expr(A) ::= separator single_ordinal(B). { A.double_value = B.double_value; }
-expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }
-
-/*expr ::= separator identifier separator. {}*/
+expr(A) ::= combo(B). { A.double_value = B.double_value; }
 
 expr(A) ::= identifier(B) any_token(C). {
     B.value = sdscat(B.value, C.value);
@@ -87,14 +63,64 @@ expr(A) ::= identifier(B). {
     }
 }
 
-any_token ::= single_num. {}
-any_token ::= direct_num. {}
-any_token ::= ten_prefix. {}
-any_token ::= big_prefix. {}
-any_token ::= single_ordinal. {}
+combo(A) ::= combo(B) separator group(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+combo(A) ::= group(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 
-separator ::= WHITESPACE. {}
-separator ::= HYPHEN. {}
+group(A) ::= double_digit(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
+group(A) ::= single_digit(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
+/*ARGGGGH! place is optional!*/
+/*group(A) ::= double_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
+
+double_digit(A) ::= double_digit(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+double_digit(A) ::= double_digit(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+double_digit(A) ::= ten_prefix(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+
+single_digit(A) ::= single_num(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+single_digit(A) ::= direct_num(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+single_digit(A) ::= single_ordinal(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+
+
+
+
+/*combo_expr(A) ::= num_expr(B) separator num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
+/*combo_expr(A) ::= num_expr(B). { A.double_value = B.double_value; }*/
+
+/*combo_expr(A) ::= single_num(B). { A.double_value = B.double_value; }*/
+/*combo_expr(A) ::= direct_num(B). { A.double_value = B.double_value; }*/
+/*combo_expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }*/
+/*combo_expr(A) ::= place(B). { A.double_value = B.double_value; }*/
+/*combo_expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }*/
+
+/*group(A) ::= single_num(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
+/*group(A) ::= direct_num(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
+/*group(A) ::= ten_prefix(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
+
+/*num_expr(A) ::= separator single_num(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= separator direct_num(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= separator ten_prefix(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= separator place(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= separator single_ordinal(B). { A.double_value = B.double_value; }*/
+
+/*num_expr(A) ::= single_num(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= direct_num(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= place(B). { A.double_value = B.double_value; }*/
+/*num_expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }*/
+
+/*num_expr(A) ::= num_expr(B) separator num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
+/*num_expr(A) ::= num_expr(B) num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
+
+/*num_expr(A) ::= num_expr(B) separator. { A.double_value = B.double_value; }*/
+
+any_token ::= single_num.
+any_token ::= direct_num.
+any_token ::= ten_prefix.
+any_token ::= place.
+any_token ::= single_ordinal.
+
+separator ::= WHITESPACE.
+separator ::= HYPHEN.
+separator ::= .
 
 single_num(A) ::= ONE(B). { A.double_value = 1.0; A.value = B.value; }
 single_num(A) ::= TWO(B). { A.double_value = 2.0; A.value = B.value; }
@@ -127,11 +153,11 @@ ten_prefix(A) ::= SEVENTY(B). { A.double_value = 70.0; A.value = B.value; }
 ten_prefix(A) ::= EIGHTY(B). { A.double_value = 80.0; A.value = B.value; }
 ten_prefix(A) ::= NINETY(B). { A.double_value = 90.0; A.value = B.value; }
 
-big_prefix(A) ::= HUNDRED(B). { A.double_value = 100.0; A.value = B.value; }
-big_prefix(A) ::= THOUSAND(B). { A.double_value = 1000.0; A.value = B.value; }
-big_prefix(A) ::= MILLION(B). { A.double_value = 1000000.0; A.value = B.value; }
-big_prefix(A) ::= BILLION(B). { A.double_value = 1000000000.0; A.value = B.value; }
-big_prefix(A) ::= TRILLION(B). { A.double_value = 1000000000000.0; A.value = B.value; }
+place(A) ::= HUNDRED(B). { A.double_value = 100.0; A.value = B.value; }
+place(A) ::= THOUSAND(B). { A.double_value = 1000.0; A.value = B.value; }
+place(A) ::= MILLION(B). { A.double_value = 1000000.0; A.value = B.value; }
+place(A) ::= BILLION(B). { A.double_value = 1000000000.0; A.value = B.value; }
+place(A) ::= TRILLION(B). { A.double_value = 1000000000000.0; A.value = B.value; }
 
 single_ordinal(A) ::= FIRST(B). { A.double_value = 1.0; A.suffix = sdsnew("st"); A.has_suffix = true; A.value = B.value; }
 single_ordinal(A) ::= THIRD(B). { A.double_value = 3.0; A.suffix = sdsnew("nd"); A.has_suffix = true; A.value = B.value; }

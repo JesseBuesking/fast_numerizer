@@ -26,6 +26,7 @@
 #- ["one fifty", "150", 3]
 - ["two-hundred", "200", 3]
 - ["5 hundred", "500", 3]
+- ["9.9 million", "9900000", 3]
 - ["nine hundred and ninety nine", "999", 3]
 - ["one thousand", "1000", 3]
 - ["twelve hundred", "1200", 3]
