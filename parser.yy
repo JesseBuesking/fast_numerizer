@@ -44,7 +44,10 @@ program ::= expr(A). {
     }
 }
 
+expr(A) ::= combo(B) separator prefix(C). { A.double_value = B.double_value + C.double_value; }
 expr(A) ::= combo(B). { A.double_value = B.double_value; }
+/*expr(A) ::= double_digit(B). { A.double_value = B.double_value; }*/
+expr(A) ::= prefix(B). { A.double_value = B.double_value; }
 
 expr(A) ::= identifier(B) any_token(C). {
     B.value = sdscat(B.value, C.value);
@@ -64,53 +67,30 @@ expr(A) ::= identifier(B). {
 }
 
 combo(A) ::= combo(B) separator group(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+/*combo(A) ::= combo(B) separator prefix(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }*/
 combo(A) ::= group(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+/*combo(A) ::= group(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
 
-group(A) ::= double_digit(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
-group(A) ::= single_digit(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
+group(A) ::= prefix(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
+/*group(A) ::= prefix(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
+
+prefix(A) ::= double_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+prefix(A) ::= single_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+
 /*ARGGGGH! place is optional!*/
 /*group(A) ::= double_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
 
-double_digit(A) ::= double_digit(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
-double_digit(A) ::= double_digit(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
-double_digit(A) ::= ten_prefix(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
+/*group(A) ::= pre_place(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }*/
+/*pre_place(A) ::= double_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
+/*pre_place(A) ::= single_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
+
+double_digit(A) ::= ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+double_digit(A) ::= ten_prefix(B) separator single_ordinal(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+/*double_digit(A) ::= ten_prefix(B). { A.double_value = B.double_value; }*/
 
 single_digit(A) ::= single_num(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 single_digit(A) ::= direct_num(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 single_digit(A) ::= single_ordinal(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
-
-
-
-
-/*combo_expr(A) ::= num_expr(B) separator num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
-/*combo_expr(A) ::= num_expr(B). { A.double_value = B.double_value; }*/
-
-/*combo_expr(A) ::= single_num(B). { A.double_value = B.double_value; }*/
-/*combo_expr(A) ::= direct_num(B). { A.double_value = B.double_value; }*/
-/*combo_expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }*/
-/*combo_expr(A) ::= place(B). { A.double_value = B.double_value; }*/
-/*combo_expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }*/
-
-/*group(A) ::= single_num(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
-/*group(A) ::= direct_num(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
-/*group(A) ::= ten_prefix(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf.", A.double_value); }*/
-
-/*num_expr(A) ::= separator single_num(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= separator direct_num(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= separator ten_prefix(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= separator place(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= separator single_ordinal(B). { A.double_value = B.double_value; }*/
-
-/*num_expr(A) ::= single_num(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= direct_num(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= ten_prefix(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= place(B). { A.double_value = B.double_value; }*/
-/*num_expr(A) ::= single_ordinal(B). { A.double_value = B.double_value; }*/
-
-/*num_expr(A) ::= num_expr(B) separator num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
-/*num_expr(A) ::= num_expr(B) num_expr(C). { A.double_value = B.double_value + C.double_value; }*/
-
-/*num_expr(A) ::= num_expr(B) separator. { A.double_value = B.double_value; }*/
 
 any_token ::= single_num.
 any_token ::= direct_num.

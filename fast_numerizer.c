@@ -26,9 +26,6 @@ void numerize(const char *data, ParserState *state) {
 #endif
 
         if (tok == 0) {
-#if debug
-            printf("End of string\n");
-#endif
             break;
         }
 

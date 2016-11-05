@@ -4,7 +4,8 @@ int main() {
     /*const char *data = "fifteen thousand";*/
     /*const char *data = "fifth";*/
     /*const char *data = "thirty-first";*/
-    const char *data = "ninety nine thousand nine hundred ninety nine";
+    /*const char *data = "ninety nine thousand nine hundred ninety nine";*/
+    const char *data = "ninety nine";
     ParserState state;
     state.precision = 3;
 
