@@ -70,18 +70,20 @@ expr(A) ::= identifier(B). {
 
 final_number(A) ::= combo(B) separator sub_hundred(C). { A.double_value = B.double_value + C.double_value; }
 final_number(A) ::= sub_hundred(B). { A.double_value = B.double_value; }
+final_number(A) ::= combo(B). { A.double_value = B.double_value; }
 
 /*one or more groups*/
 combo(A) ::= combo(B) separator group(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
 combo(A) ::= group(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 
 group(A) ::= sub_hundred(B) separator place(C). { A.double_value = B.double_value * C.double_value; printf("A is %lf\n.", A.double_value); }
+/*group(A) ::= sub_hundred(B). { A.double_value = B.double_value; }*/
 
 sub_hundred(A) ::= double_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 sub_hundred(A) ::= single_digit(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 sub_hundred(A) ::= ZERO. { A.double_value = 0.0; }
 
-double_digit(A) ::= ten_prefix(B) separator single_num(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
+double_digit(A) ::= ten_prefix(B) separator single_digit(C). { A.double_value = B.double_value + C.double_value; printf("A is %lf\n.", A.double_value); }
 double_digit(A) ::= direct_num(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }
 /*double_digit(A) ::= ten_prefix(B). { A.double_value = B.double_value; printf("A is %lf\n.", A.double_value); }*/
 
