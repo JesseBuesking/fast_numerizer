@@ -127,7 +127,7 @@ hundredths(A) ::= NUMBER(B) HUNDREDTHS. { A.double_value = B.double_value * 100.
 hundredths(A) ::= HUNDREDTH. { A.double_value = 100.0; A.suffix = TH; }
 hundredths(A) ::= HUNDREDTHS. { A.double_value = 100.0; A.suffix = THS; }
 
-first_to_99th(A) ::= tens(B) one_to_9(C). { A.double_value = B.double_value + C.double_value; A.suffix = B.suffix; }
+first_to_99th(A) ::= tens(B) first_to_9th(C). { A.double_value = B.double_value + C.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= tenths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= tenth_to_19th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= first_to_9th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
@@ -146,7 +146,7 @@ hundreds(A) ::= one_to_99(B) HUNDRED. { A.double_value = B.double_value * 100.0;
 hundreds(A) ::= NUMBER(B) HUNDRED. { A.double_value = B.double_value * 100.0; }
 hundreds(A) ::= HUNDRED. { A.double_value = 100.0; }
 
-one_to_99(A) ::= tens(B) first_to_9th(C). { A.double_value = B.double_value + C.double_value; }
+one_to_99(A) ::= tens(B) one_to_9(C). { A.double_value = B.double_value + C.double_value; }
 one_to_99(A) ::= tens(B). { A.double_value = B.double_value; }
 one_to_99(A) ::= ten_to_19(B). { A.double_value = B.double_value; }
 one_to_99(A) ::= one_to_9(B). { A.double_value = B.double_value; }

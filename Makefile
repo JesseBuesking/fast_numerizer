@@ -42,7 +42,7 @@ all: fast_numerizer
 
 fast_numerizer: $(FAST_NUMERIZER_OBJ) main.o
 	$(FAST_NUMERIZER_LD) $^ -o $@ $(FINAL_LIBS)
-	#./fast_numerizer
+	./fast_numerizer
 
 parser.h: parser.yy
 	# produces parser.c and parser.h
