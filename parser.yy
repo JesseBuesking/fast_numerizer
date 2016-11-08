@@ -114,8 +114,8 @@ thousands(A) ::= THOUSAND. { A.double_value = 1000.0; }
 sub thousand ordinal
 -------------------------------------- */
 
-first_to_999th(A) ::= hundredths(B) AND first_to_99th(C). { A.double_value = B.double_value + C.double_value; A.suffix = B.suffix; }
-first_to_999th(A) ::= hundredths(B) first_to_99th(C). { A.double_value = B.double_value + C.double_value; A.suffix = B.suffix; }
+first_to_999th(A) ::= hundreds(B) AND first_to_99th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
+first_to_999th(A) ::= hundreds(B) first_to_99th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
 first_to_999th(A) ::= hundredths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_999th(A) ::= AND first_to_99th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_999th(A) ::= first_to_99th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
@@ -127,7 +127,7 @@ hundredths(A) ::= NUMBER(B) HUNDREDTHS. { A.double_value = B.double_value * 100.
 hundredths(A) ::= HUNDREDTH. { A.double_value = 100.0; A.suffix = TH; }
 hundredths(A) ::= HUNDREDTHS. { A.double_value = 100.0; A.suffix = THS; }
 
-first_to_99th(A) ::= tens(B) first_to_9th(C). { A.double_value = B.double_value + C.double_value; A.suffix = B.suffix; }
+first_to_99th(A) ::= tens(B) first_to_9th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
 first_to_99th(A) ::= tenths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= tenth_to_19th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= first_to_9th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
