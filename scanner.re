@@ -117,16 +117,16 @@ int numerizer_start(scanstate *ss) {
         'ninetieth' { return TOKEN_NINETIETH; }
         'ninetieths' { return TOKEN_NINETIETHS; }
 
-        //'hundredth' { return TOKEN_HUNDREDTH; }
-        //'hundredths' { return TOKEN_HUNDREDTHS; }
-        //'thousandth' { return TOKEN_THOUSANDTH; }
-        //'thousandths' { return TOKEN_THOUSANDTHS; }
-        //'millionth' { return TOKEN_MILLIONTH; }
-        //'millionths' { return TOKEN_MILLIONTHS; }
-        //'billionth' { return TOKEN_BILLIONTH; }
-        //'billionths' { return TOKEN_BILLIONTHS; }
-        //'trillionth' { return TOKEN_TRILLIONTH; }
-        //'trillionths' { return TOKEN_TRILLIONTHS; }
+        'hundredth' { return TOKEN_HUNDREDTH; }
+        'hundredths' { return TOKEN_HUNDREDTHS; }
+        'thousandth' { return TOKEN_THOUSANDTH; }
+        'thousandths' { return TOKEN_THOUSANDTHS; }
+        'millionth' { return TOKEN_MILLIONTH; }
+        'millionths' { return TOKEN_MILLIONTHS; }
+        'billionth' { return TOKEN_BILLIONTH; }
+        'billionths' { return TOKEN_BILLIONTHS; }
+        'trillionth' { return TOKEN_TRILLIONTH; }
+        'trillionths' { return TOKEN_TRILLIONTHS; }
 
         'quarter' { return TOKEN_QUARTER; }
         'quarters' { return TOKEN_QUARTERS; }

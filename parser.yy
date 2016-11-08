@@ -69,8 +69,27 @@ final_number(A) ::= one_to_999999999999999(B) QUARTERS. { A.double_value = B.dou
 final_number(A) ::= one_to_999999999999999(B) AND_A HALF. { A.double_value = B.double_value + 0.5; }
 final_number(A) ::= one_to_999999999999999(B) HALVES. { A.double_value = B.double_value / 2.0; }
 final_number(A) ::= one_to_999999999999999(B). { A.double_value = B.double_value; }
-final_number(A) ::= first_to_999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+final_number(A) ::= first_to_999999999999999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
 final_number(A) ::= ZERO. { A.double_value = 0.0; }
+
+/* --------------------------------------
+sub quadrillion regular
+-------------------------------------- */
+
+first_to_999999999999999th(A) ::= trillions(B) first_to_999999999999th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
+first_to_999999999999999th(A) ::= trillionths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+first_to_999999999999999th(A) ::= first_to_999999999999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+
+trillionths(A) ::= one_to_999999999999(B) TRILLIONTH. { A.double_value = B.double_value * 1000000000000.0; A.suffix = TH; }
+trillionths(A) ::= one_to_999999999999(B) TRILLIONTHS. { A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }
+trillionths(A) ::= NUMBER(B) TRILLIONTH. { A.double_value = B.double_value * 1000000000000.0; A.suffix = TH; }
+trillionths(A) ::= NUMBER(B) TRILLIONTHS. { A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }
+trillionths(A) ::= TRILLIONTH. { A.double_value = 1000000000000.0; A.suffix = TH; }
+trillionths(A) ::= TRILLIONTHS. { A.double_value = 1000000000000.0; A.suffix = THS; }
+
+/* --------------------------------------
+sub quadrillion regular
+-------------------------------------- */
 
 one_to_999999999999999(A) ::= trillions(B) one_to_999999999999(C). { A.double_value = B.double_value + C.double_value; }
 one_to_999999999999999(A) ::= trillions(B). { A.double_value = B.double_value; }
@@ -80,7 +99,24 @@ trillions(A) ::= one_to_999999999999(B) TRILLION. { A.double_value = B.double_va
 trillions(A) ::= NUMBER(B) TRILLION. { A.double_value = B.double_value * 1000000000000.0; }
 trillions(A) ::= TRILLION. { A.double_value = 1000000000000.0; }
 
-/* -------------------------------------- */
+/* --------------------------------------
+sub trillion ordinal
+-------------------------------------- */
+
+first_to_999999999999th(A) ::= billions(B) first_to_999999999th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
+first_to_999999999999th(A) ::= billionths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+first_to_999999999999th(A) ::= first_to_999999999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+
+billionths(A) ::= one_to_999999999(B) BILLIONTH. { A.double_value = B.double_value * 1000000000.0; A.suffix = TH; }
+billionths(A) ::= one_to_999999999(B) BILLIONTHS. { A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }
+billionths(A) ::= NUMBER(B) BILLIONTH. { A.double_value = B.double_value * 1000000000.0; A.suffix = TH; }
+billionths(A) ::= NUMBER(B) BILLIONTHS. { A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }
+billionths(A) ::= BILLIONTH. { A.double_value = 1000000000.0; A.suffix = TH; }
+billionths(A) ::= BILLIONTHS. { A.double_value = 1000000000.0; A.suffix = THS; }
+
+/* --------------------------------------
+sub trillion regular
+-------------------------------------- */
 
 one_to_999999999999(A) ::= billions(B) one_to_999999999(C). { A.double_value = B.double_value + C.double_value; }
 one_to_999999999999(A) ::= billions(B). { A.double_value = B.double_value; }
@@ -90,7 +126,24 @@ billions(A) ::= one_to_999999999(B) BILLION. { A.double_value = B.double_value *
 billions(A) ::= NUMBER(B) BILLION. { A.double_value = B.double_value * 1000000000.0; }
 billions(A) ::= BILLION. { A.double_value = 1000000000.0; }
 
-/* -------------------------------------- */
+/* --------------------------------------
+sub billion ordinal
+-------------------------------------- */
+
+first_to_999999999th(A) ::= millions(B) first_to_999999th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
+first_to_999999999th(A) ::= millionths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+first_to_999999999th(A) ::= first_to_999999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+
+millionths(A) ::= one_to_999999(B) MILLIONTH. { A.double_value = B.double_value * 1000000.0; A.suffix = TH; }
+millionths(A) ::= one_to_999999(B) MILLIONTHS. { A.double_value = B.double_value * 1000000.0; A.suffix = THS; }
+millionths(A) ::= NUMBER(B) MILLIONTH. { A.double_value = B.double_value * 1000000.0; A.suffix = TH; }
+millionths(A) ::= NUMBER(B) MILLIONTHS. { A.double_value = B.double_value * 1000000.0; A.suffix = THS; }
+millionths(A) ::= MILLIONTH. { A.double_value = 1000000.0; A.suffix = TH; }
+millionths(A) ::= MILLIONTHS. { A.double_value = 1000000.0; A.suffix = THS; }
+
+/* --------------------------------------
+sub billion regular
+-------------------------------------- */
 
 one_to_999999999(A) ::= millions(B) one_to_999999(C). { A.double_value = B.double_value + C.double_value; }
 one_to_999999999(A) ::= millions(B). { A.double_value = B.double_value; }
@@ -100,7 +153,24 @@ millions(A) ::= one_to_999999(B) MILLION. { A.double_value = B.double_value * 10
 millions(A) ::= NUMBER(B) MILLION. { A.double_value = B.double_value * 1000000.0; }
 millions(A) ::= MILLION. { A.double_value = 1000000.0; }
 
-/* -------------------------------------- */
+/* --------------------------------------
+sub million ordinal
+-------------------------------------- */
+
+first_to_999999th(A) ::= thousands(B) first_to_999th(C). { A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
+first_to_999999th(A) ::= thousandths(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+first_to_999999th(A) ::= first_to_999th(B). { A.double_value = B.double_value; A.suffix = B.suffix; }
+
+thousandths(A) ::= one_to_999(B) THOUSANDTH. { A.double_value = B.double_value * 1000.0; A.suffix = TH; }
+thousandths(A) ::= one_to_999(B) THOUSANDTHS. { A.double_value = B.double_value * 1000.0; A.suffix = THS; }
+thousandths(A) ::= NUMBER(B) THOUSANDTH. { A.double_value = B.double_value * 1000.0; A.suffix = TH; }
+thousandths(A) ::= NUMBER(B) THOUSANDTHS. { A.double_value = B.double_value * 1000.0; A.suffix = THS; }
+thousandths(A) ::= THOUSANDTH. { A.double_value = 1000.0; A.suffix = TH; }
+thousandths(A) ::= THOUSANDTHS. { A.double_value = 1000.0; A.suffix = THS; }
+
+/* --------------------------------------
+sub million regular
+-------------------------------------- */
 
 one_to_999999(A) ::= thousands(B) one_to_999(C). { A.double_value = B.double_value + C.double_value; }
 one_to_999999(A) ::= thousands(B). { A.double_value = B.double_value; }

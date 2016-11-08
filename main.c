@@ -9,7 +9,8 @@ int main() {
     /*const char *data = "one thousand";*/
     /*const char *data = "I am thirty three years old.";*/
     /*const char *data = "twentyone-thousand";*/
-    const char *data = "nine hundred and ninety nine";
+    /*const char *data = "nine hundred and ninety nine";*/
+    const char *data = "hundredth";
 
     ParserState state;
     state.precision = 3;
