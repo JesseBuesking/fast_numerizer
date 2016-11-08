@@ -50,6 +50,8 @@ void numerize(const char *data, ParserState *state) {
         if (tok != TOKEN_SEPARATOR) {
             Parse(pParser, tok, yylval, state);
         }
+
+        sdsfree(value);
     } while (tok);
 
     Parse(pParser, 0, yylval, state);

@@ -17,6 +17,7 @@ int main() {
     numerize(data, &state);
 
     printf("RESULT: %s\n", state.result);
+
     sdsfree(state.result);
     return 0;
 }
