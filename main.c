@@ -6,7 +6,11 @@ int main() {
     /*const char *data = "thirty-first";*/
     /*const char *data = "ninety nine thousand nine hundred ninety nine";*/
     /*const char *data = "ninety nine";*/
-    const char *data = "one thousand";
+    /*const char *data = "one thousand";*/
+    /*const char *data = "I am thirty three years old.";*/
+    /*const char *data = "twentyone-thousand";*/
+    const char *data = "third";
+
     ParserState state;
     state.precision = 3;
 

@@ -1,5 +1,7 @@
 #include "fast_numerizer.h"
 
+#define TOKEN_SEPARATOR 10000
+
 void numerize(const char *data, ParserState *state) {
     YYSTYPE yylval;
 
@@ -35,13 +37,19 @@ void numerize(const char *data, ParserState *state) {
         }
 
         // set the underlying value
-        yylval.value = sdsnewlen(ss.token, scan_token_length(&ss));
+        sds value = sdsnewlen(ss.token, scan_token_length(&ss));
 
 #if debug
-        printf("token is \"%s\"\n", yylval.value);
+        printf("token is \"%s\"\n", value);
 #endif
 
-        Parse(pParser, tok, yylval, state);
+        if (tok == TOKEN_NUMBER) {
+            sscanf(value, "%lf", &yylval.double_value);
+        }
+
+        if (tok != TOKEN_SEPARATOR) {
+            Parse(pParser, tok, yylval, state);
+        }
     } while (tok);
 
     Parse(pParser, 0, yylval, state);

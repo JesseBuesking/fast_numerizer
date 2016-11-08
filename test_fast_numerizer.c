@@ -70,6 +70,6 @@ INSTANTIATE_TEST_CASE_P(
 
 TEST(MorphStringTest, HandlesTrailingZeros) {
     sds s = sdsnew("12.000");
-    morphNumericString(s, 3);
+    morphNumericString(&s, 3);
     ASSERT_TRUE(strcmp("12", s) == 0) << "12 != " << s << "\n";
 }

@@ -1,14 +1,24 @@
 #ifndef SCANNER_DEF_H
 #define SCANNER_DEF_H
 
-#include <stdbool.h>
 #include "sds.h"
+
+enum suffixValues
+{
+    NONE,
+    ST,
+    STS,
+    ND,
+    NDS,
+    RD,
+    RDS,
+    TH,
+    THS
+};
 
 typedef struct {
     double double_value;
-    sds value;
-    bool has_suffix;
-    sds suffix;
+    enum suffixValues suffix;
 } YYSTYPE;
 
 typedef struct {

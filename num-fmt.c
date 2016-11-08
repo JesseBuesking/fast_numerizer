@@ -1,12 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 #include "sds.h"
 
-void doubleToString(sds s, double d, int precision) {
-    nDecimals(s, d, precision);
-    morphNumericString(s, precision);
-}
-
-void nDecimals(sds s, double d, int n) {
+void nDecimals(sds *s, double d, int n) {
     int sz; double d2;
 
     // Allow for negative.
@@ -30,32 +26,34 @@ void nDecimals(sds s, double d, int n) {
 
     // Create format string then use it.
     /*sprintf(s, "%*.*f", sz, n, d);*/
-    sds tmp = sdscatprintf(sdsempty(), "%*.*f", sz, n, d);
-    sdscpy(s, tmp);
-    sdsfree(tmp);
+    *s = sdscatprintf(sdsempty(), "%*.*f", sz, n, d);
 }
 
-void morphNumericString(sds s, int n) {
+void morphNumericString(sds *s, int n) {
     char *p;
     int count;
 
-    p = strchr(s, '.');         // Find decimal point, if any.
+    p = strchr(*s, '.');                    // Find decimal point, if any.
     if (p != NULL) {
-        count = n;              // Adjust for more or less decimals.
-        while (count >= 0) {    // Maximum decimals allowed.
-            count--;
-            if (*p == '\0')     // If there's less than desired.
-                break;
-            p++;                // Next character.
+        int dotPosition = (p - *s);
+        int endRange = dotPosition + n;
+        int lastPosition = (int) sdslen(*s) - 1;
+
+        endRange = endRange < lastPosition ? endRange : lastPosition;
+
+        while ((*s)[endRange] == '0') {     // Remove trailing zeros.
+            endRange -= 1;
         }
 
-        *p-- = '\0';            // Truncate string.
-        while (*p == '0') {     // Remove trailing zeros.
-            *p-- = '\0';
+        if ((*s)[endRange] == '.') {        // If all decimals were zeros, remove "."
+            endRange -= 1;
         }
 
-        if (*p == '.') {        // If all decimals were zeros, remove ".".
-            *p = '\0';
-        }
+        sdsrange(*s, 0, endRange);          // Trim the string to the range.
     }
+}
+
+void doubleToString(sds *s, double d, int precision) {
+    nDecimals(s, d, precision);
+    morphNumericString(s, precision);
 }

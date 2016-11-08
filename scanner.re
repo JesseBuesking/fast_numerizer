@@ -3,12 +3,22 @@
 #include "scan.h"
 #include "readmem.h"
 
+#define TOKEN_SEPARATOR 10000
+
 int numerizer_start(scanstate *ss) {
     scanner_enter(ss);
+//std:
     /*!re2c
-        WS       = [ \r\n\t\f];
-        ANY_CHAR = [^];
-        END      = "\x00";
+        SEPARATOR = [ \r\n\t\f\-]+;
+        END       = "\x00";
+        //CHARS     = [^ \r\n\t\f\-\x00]+; // not a separator
+        CHARS     = [^]; // not a separator
+        NUMBER     = [0-9\.]+;
+
+        NUMBER { return TOKEN_NUMBER; }
+
+        'and' { return TOKEN_AND; }
+        'and a' { return TOKEN_AND_A; }
 
         'zero' { return TOKEN_ZERO; }
         'one' { return TOKEN_ONE; }
@@ -49,34 +59,87 @@ int numerizer_start(scanstate *ss) {
         'trillion' { return TOKEN_TRILLION; }
 
         'first' { return TOKEN_FIRST; }
+        'firsts' { return TOKEN_FIRSTS; }
+        'second' { return TOKEN_SECOND; }
+        'seconds' { return TOKEN_SECONDS; }
         'third' { return TOKEN_THIRD; }
-        'thirds' { return TOKEN_THIRD; }
+        'thirds' { return TOKEN_THIRDS; }
         'fourth' { return TOKEN_FOURTH; }
-        'fourths' { return TOKEN_FOURTH; }
+        'fourths' { return TOKEN_FOURTHS; }
         'fifth' { return TOKEN_FIFTH; }
-        'fifths' { return TOKEN_FIFTH; }
+        'fifths' { return TOKEN_FIFTHS; }
         'sixth' { return TOKEN_SIXTH; }
-        'sixths' { return TOKEN_SIXTH; }
+        'sixths' { return TOKEN_SIXTHS; }
         'seventh' { return TOKEN_SEVENTH; }
-        'sevenths' { return TOKEN_SEVENTH; }
+        'sevenths' { return TOKEN_SEVENTHS; }
         'eighth' { return TOKEN_EIGHTH; }
-        'eighths' { return TOKEN_EIGHTH; }
+        'eighths' { return TOKEN_EIGHTHS; }
         'nineth' { return TOKEN_NINTH; }
-        'nineths' { return TOKEN_NINTH; }
+        'nineths' { return TOKEN_NINTHS; }
         'ninth' { return TOKEN_NINTH; }
-        'ninths' { return TOKEN_NINTH; }
+        'ninths' { return TOKEN_NINTHS; }
+
+        'tenth' { return TOKEN_TENTH; }
+        'tenths' { return TOKEN_TENTHS; }
+        'eleventh' { return TOKEN_ELEVENTH; }
+        'elevenths' { return TOKEN_ELEVENTHS; }
+        'twelfth' { return TOKEN_TWELFTH; }
+        'twelfths' { return TOKEN_TWELFTHS; }
+        'thirteenth' { return TOKEN_THIRTEENTH; }
+        'thirteenths' { return TOKEN_THIRTEENTHS; }
+        'fourteenth' { return TOKEN_FOURTEENTH; }
+        'fourteenths' { return TOKEN_FOURTEENTHS; }
+        'fifteenth' { return TOKEN_FIFTEENTH; }
+        'fifteenths' { return TOKEN_FIFTEENTHS; }
+        'sixteenth' { return TOKEN_SIXTEENTH; }
+        'sixteenths' { return TOKEN_SIXTEENTHS; }
+        'seventeenth' { return TOKEN_SEVENTEENTH; }
+        'seventeenths' { return TOKEN_SEVENTEENTHS; }
+        'eighteenth' { return TOKEN_EIGHTEENTH; }
+        'eighteenths' { return TOKEN_EIGHTEENTHS; }
+        'nineteenth' { return TOKEN_NINETEENTH; }
+        'nineteenths' { return TOKEN_NINETEENTHS; }
+
+        'twentieth' { return TOKEN_TWENTIETH; }
+        'twentieths' { return TOKEN_TWENTIETHS; }
+        'thirtieth' { return TOKEN_THIRTIETH; }
+        'thirtieths' { return TOKEN_THIRTIETHS; }
+        'fourtieth' { return TOKEN_FOURTIETH; }
+        'fourtieths' { return TOKEN_FOURTIETHS; }
+        'fiftieth' { return TOKEN_FIFTIETH; }
+        'fiftieths' { return TOKEN_FIFTIETHS; }
+        'sixtieth' { return TOKEN_SIXTIETH; }
+        'sixtieths' { return TOKEN_SIXTIETHS; }
+        'seventieth' { return TOKEN_SEVENTIETH; }
+        'seventieths' { return TOKEN_SEVENTIETHS; }
+        'eightieth' { return TOKEN_EIGHTIETH; }
+        'eightieths' { return TOKEN_EIGHTIETHS; }
+        'ninetieth' { return TOKEN_NINETIETH; }
+        'ninetieths' { return TOKEN_NINETIETHS; }
+
+        //'hundredth' { return TOKEN_HUNDREDTH; }
+        //'hundredths' { return TOKEN_HUNDREDTHS; }
+        //'thousandth' { return TOKEN_THOUSANDTH; }
+        //'thousandths' { return TOKEN_THOUSANDTHS; }
+        //'millionth' { return TOKEN_MILLIONTH; }
+        //'millionths' { return TOKEN_MILLIONTHS; }
+        //'billionth' { return TOKEN_BILLIONTH; }
+        //'billionths' { return TOKEN_BILLIONTHS; }
+        //'trillionth' { return TOKEN_TRILLIONTH; }
+        //'trillionths' { return TOKEN_TRILLIONTHS; }
 
         'quarter' { return TOKEN_QUARTER; }
-        'quarters' { return TOKEN_QUARTER; }
+        'quarters' { return TOKEN_QUARTERS; }
 
         'half' { return TOKEN_HALF; }
+        'halves' { return TOKEN_HALVES; }
 
-        WS { return TOKEN_WHITESPACE; }
-        '-' { return TOKEN_HYPHEN; }
+        //SEPARATOR { goto std; }
+        SEPARATOR { return TOKEN_SEPARATOR; }
 
         END { return 0; }
 
-        ANY_CHAR { return TOKEN_CHARACTER; }
+        CHARS { return TOKEN_CHARACTERS; }
     */
 }
 
