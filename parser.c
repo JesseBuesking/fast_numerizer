@@ -33,7 +33,10 @@
 #include "scanner.def.h"
 #include "sds.h"
 #include "num-fmt.h"
-#line 37 "parser.c"
+
+#define maxi(a, b) (a > b ? a : b)
+#define mini(a, b) (a < b ? a : b)
+#line 40 "parser.c"
 /**************** End of %include directives **********************************/
 /* These constants specify the various numeric values for terminal symbols
 ** in a format understandable to "makeheaders".  This section is blank unless
@@ -1338,8 +1341,10 @@ static void yy_reduce(
 /********** Begin reduce actions **********************************************/
         YYMINORTYPE yylhsminor;
       case 0: /* program ::= expr */
-#line 27 "parser.yy"
+#line 30 "parser.yy"
 {
+    printf("locations %d %d\n", yymsp[0].minor.yy0.spos, yymsp[0].minor.yy0.epos);
+
     doubleToString(&state->result, yymsp[0].minor.yy0.double_value, state->precision);
 
     switch (yymsp[0].minor.yy0.suffix) {
@@ -1371,7 +1376,7 @@ static void yy_reduce(
 
     state->result = sdsRemoveFreeSpace(state->result);
 }
-#line 1375 "parser.c"
+#line 1380 "parser.c"
         break;
       case 1: /* expr ::= sentence */
       case 2: /* expr ::= final_number */ yytestcase(yyruleno==2);
@@ -1389,45 +1394,45 @@ static void yy_reduce(
       case 84: /* first_to_99th ::= tenths */ yytestcase(yyruleno==84);
       case 85: /* first_to_99th ::= tenth_to_19th */ yytestcase(yyruleno==85);
       case 86: /* first_to_99th ::= first_to_9th */ yytestcase(yyruleno==86);
-#line 60 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
-#line 1395 "parser.c"
+#line 65 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
+#line 1400 "parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 3: /* sentence ::= identifiers final_number */
       case 75: /* first_to_999th ::= AND first_to_99th */ yytestcase(yyruleno==75);
-#line 64 "parser.yy"
-{ yymsp[-1].minor.yy0.double_value = yymsp[0].minor.yy0.double_value; yymsp[-1].minor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
-#line 1402 "parser.c"
+#line 69 "parser.yy"
+{ yymsp[-1].minor.yy0.spos = yymsp[0].minor.yy0.spos; yymsp[-1].minor.yy0.epos = yymsp[0].minor.yy0.epos; yymsp[-1].minor.yy0.double_value = yymsp[0].minor.yy0.double_value; yymsp[-1].minor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
+#line 1407 "parser.c"
         break;
       case 4: /* sentence ::= final_number identifiers */
-#line 65 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[-1].minor.yy0.suffix; }
-#line 1407 "parser.c"
+#line 70 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[-1].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[-1].minor.yy0.epos; yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[-1].minor.yy0.suffix; }
+#line 1412 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 5: /* final_number ::= one_to_999999999999999 AND_A QUARTER */
-#line 67 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + 0.25; }
-#line 1413 "parser.c"
+#line 72 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-2].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-2].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + 0.25; }
+#line 1418 "parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 6: /* final_number ::= one_to_999999999999999 QUARTERS */
-#line 68 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value / 4.0; }
-#line 1419 "parser.c"
+#line 73 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value / 4.0; }
+#line 1424 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 7: /* final_number ::= one_to_999999999999999 AND_A HALF */
-#line 69 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + 0.5; }
-#line 1425 "parser.c"
+#line 74 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-2].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-2].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + 0.5; }
+#line 1430 "parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 8: /* final_number ::= one_to_999999999999999 HALVES */
-#line 70 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value / 2.0; }
-#line 1431 "parser.c"
+#line 75 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value / 2.0; }
+#line 1436 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 9: /* final_number ::= one_to_999999999999999 */
@@ -1444,15 +1449,16 @@ static void yy_reduce(
       case 96: /* one_to_99 ::= tens */ yytestcase(yyruleno==96);
       case 97: /* one_to_99 ::= ten_to_19 */ yytestcase(yyruleno==97);
       case 98: /* one_to_99 ::= one_to_9 */ yytestcase(yyruleno==98);
-#line 71 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
-#line 1450 "parser.c"
+#line 76 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
+#line 1455 "parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 11: /* final_number ::= ZERO */
-#line 73 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 0.0; }
-#line 1456 "parser.c"
+#line 83 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 0.0; }
+#line 1461 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 12: /* first_to_999999999999999th ::= trillions first_to_999999999999th */
       case 27: /* first_to_999999999999th ::= billions first_to_999999999th */ yytestcase(yyruleno==27);
@@ -1460,34 +1466,36 @@ static void yy_reduce(
       case 57: /* first_to_999999th ::= thousands first_to_999th */ yytestcase(yyruleno==57);
       case 73: /* first_to_999th ::= hundreds first_to_99th */ yytestcase(yyruleno==73);
       case 83: /* first_to_99th ::= tens first_to_9th */ yytestcase(yyruleno==83);
-#line 79 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
-#line 1466 "parser.c"
+#line 103 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
+#line 1472 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 15: /* trillionths ::= one_to_999999999999 TRILLIONTH */
       case 17: /* trillionths ::= NUMBER TRILLIONTH */ yytestcase(yyruleno==17);
-#line 83 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; yylhsminor.yy0.suffix = TH; }
-#line 1473 "parser.c"
+#line 107 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1479 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 16: /* trillionths ::= one_to_999999999999 TRILLIONTHS */
       case 18: /* trillionths ::= NUMBER TRILLIONTHS */ yytestcase(yyruleno==18);
-#line 84 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; yylhsminor.yy0.suffix = THS; }
-#line 1480 "parser.c"
+#line 108 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1486 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 19: /* trillionths ::= TRILLIONTH */
-#line 87 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000000.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1486 "parser.c"
+#line 111 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1492 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 20: /* trillionths ::= TRILLIONTHS */
-#line 88 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000000.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1491 "parser.c"
+#line 112 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1498 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 21: /* one_to_999999999999999 ::= trillions one_to_999999999999 */
       case 36: /* one_to_999999999999 ::= billions one_to_999999999 */ yytestcase(yyruleno==36);
@@ -1495,588 +1503,682 @@ static void yy_reduce(
       case 66: /* one_to_999999 ::= thousands one_to_999 */ yytestcase(yyruleno==66);
       case 88: /* one_to_999 ::= hundreds one_to_99 */ yytestcase(yyruleno==88);
       case 95: /* one_to_99 ::= tens one_to_9 */ yytestcase(yyruleno==95);
-#line 94 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
-#line 1501 "parser.c"
+#line 118 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
+#line 1509 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 24: /* trillions ::= one_to_999999999999 TRILLION */
       case 25: /* trillions ::= NUMBER TRILLION */ yytestcase(yyruleno==25);
-#line 98 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; }
-#line 1508 "parser.c"
+#line 122 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000000.0; }
+#line 1516 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 26: /* trillions ::= TRILLION */
-#line 100 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000000.0; }
-#line 1514 "parser.c"
+#line 124 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000000.0; }
+#line 1522 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 30: /* billionths ::= one_to_999999999 BILLIONTH */
       case 32: /* billionths ::= NUMBER BILLIONTH */ yytestcase(yyruleno==32);
-#line 110 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; yylhsminor.yy0.suffix = TH; }
-#line 1520 "parser.c"
+#line 134 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1529 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 31: /* billionths ::= one_to_999999999 BILLIONTHS */
       case 33: /* billionths ::= NUMBER BILLIONTHS */ yytestcase(yyruleno==33);
-#line 111 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; yylhsminor.yy0.suffix = THS; }
-#line 1527 "parser.c"
+#line 135 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1536 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 34: /* billionths ::= BILLIONTH */
-#line 114 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1533 "parser.c"
+#line 138 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1542 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 35: /* billionths ::= BILLIONTHS */
-#line 115 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1538 "parser.c"
+#line 139 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1548 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 39: /* billions ::= one_to_999999999 BILLION */
       case 40: /* billions ::= NUMBER BILLION */ yytestcase(yyruleno==40);
-#line 125 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; }
-#line 1544 "parser.c"
+#line 149 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000000.0; }
+#line 1555 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 41: /* billions ::= BILLION */
-#line 127 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000000.0; }
-#line 1550 "parser.c"
+#line 151 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000000.0; }
+#line 1561 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 45: /* millionths ::= one_to_999999 MILLIONTH */
       case 47: /* millionths ::= NUMBER MILLIONTH */ yytestcase(yyruleno==47);
-#line 137 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; yylhsminor.yy0.suffix = TH; }
-#line 1556 "parser.c"
+#line 161 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1568 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 46: /* millionths ::= one_to_999999 MILLIONTHS */
       case 48: /* millionths ::= NUMBER MILLIONTHS */ yytestcase(yyruleno==48);
-#line 138 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; yylhsminor.yy0.suffix = THS; }
-#line 1563 "parser.c"
+#line 162 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1575 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 49: /* millionths ::= MILLIONTH */
-#line 141 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1569 "parser.c"
+#line 165 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000.0; yylhsminor.yy0.suffix = TH; }
+#line 1581 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 50: /* millionths ::= MILLIONTHS */
-#line 142 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1574 "parser.c"
+#line 166 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000.0; yylhsminor.yy0.suffix = THS; }
+#line 1587 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 54: /* millions ::= one_to_999999 MILLION */
       case 55: /* millions ::= NUMBER MILLION */ yytestcase(yyruleno==55);
-#line 152 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; }
-#line 1580 "parser.c"
+#line 176 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000000.0; }
+#line 1594 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 56: /* millions ::= MILLION */
-#line 154 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000000.0; }
-#line 1586 "parser.c"
+#line 178 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000000.0; }
+#line 1600 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 60: /* thousandths ::= one_to_999 THOUSANDTH */
       case 62: /* thousandths ::= NUMBER THOUSANDTH */ yytestcase(yyruleno==62);
-#line 164 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; yylhsminor.yy0.suffix = TH; }
-#line 1592 "parser.c"
+#line 188 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; yylhsminor.yy0.suffix = TH; }
+#line 1607 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 61: /* thousandths ::= one_to_999 THOUSANDTHS */
       case 63: /* thousandths ::= NUMBER THOUSANDTHS */ yytestcase(yyruleno==63);
-#line 165 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; yylhsminor.yy0.suffix = THS; }
-#line 1599 "parser.c"
+#line 189 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; yylhsminor.yy0.suffix = THS; }
+#line 1614 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 64: /* thousandths ::= THOUSANDTH */
-#line 168 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1605 "parser.c"
+#line 192 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000.0; yylhsminor.yy0.suffix = TH; }
+#line 1620 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 65: /* thousandths ::= THOUSANDTHS */
-#line 169 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1610 "parser.c"
+#line 193 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000.0; yylhsminor.yy0.suffix = THS; }
+#line 1626 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 69: /* thousands ::= one_to_999 THOUSAND */
       case 70: /* thousands ::= NUMBER THOUSAND */ yytestcase(yyruleno==70);
-#line 179 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; }
-#line 1616 "parser.c"
+#line 203 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 1000.0; }
+#line 1633 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 71: /* thousands ::= THOUSAND */
-#line 181 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1000.0; }
-#line 1622 "parser.c"
+#line 205 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1000.0; }
+#line 1639 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 72: /* first_to_999th ::= hundreds AND first_to_99th */
-#line 187 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
-#line 1627 "parser.c"
+#line 211 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-2].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-2].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; yylhsminor.yy0.suffix = yymsp[0].minor.yy0.suffix; }
+#line 1645 "parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 77: /* hundredths ::= one_to_99 HUNDREDTH */
       case 79: /* hundredths ::= NUMBER HUNDREDTH */ yytestcase(yyruleno==79);
-#line 193 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; yylhsminor.yy0.suffix = TH; }
-#line 1634 "parser.c"
+#line 217 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; yylhsminor.yy0.suffix = TH; }
+#line 1652 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 78: /* hundredths ::= one_to_99 HUNDREDTHS */
       case 80: /* hundredths ::= NUMBER HUNDREDTHS */ yytestcase(yyruleno==80);
-#line 194 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; yylhsminor.yy0.suffix = THS; }
-#line 1641 "parser.c"
+#line 218 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; yylhsminor.yy0.suffix = THS; }
+#line 1659 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 81: /* hundredths ::= HUNDREDTH */
-#line 197 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 100.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1647 "parser.c"
+#line 221 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 100.0; yylhsminor.yy0.suffix = TH; }
+#line 1665 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 82: /* hundredths ::= HUNDREDTHS */
-#line 198 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 100.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1652 "parser.c"
+#line 222 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 100.0; yylhsminor.yy0.suffix = THS; }
+#line 1671 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 87: /* one_to_999 ::= hundreds AND one_to_99 */
-#line 209 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
-#line 1657 "parser.c"
+#line 233 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-2].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-2].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-2].minor.yy0.double_value + yymsp[0].minor.yy0.double_value; }
+#line 1677 "parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 90: /* one_to_999 ::= AND one_to_99 */
-#line 212 "parser.yy"
-{ yymsp[-1].minor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
-#line 1663 "parser.c"
+#line 236 "parser.yy"
+{ yymsp[-1].minor.yy0.spos = yymsp[0].minor.yy0.spos; yymsp[-1].minor.yy0.epos = yymsp[0].minor.yy0.epos; yymsp[-1].minor.yy0.double_value = yymsp[0].minor.yy0.double_value; }
+#line 1683 "parser.c"
         break;
       case 92: /* hundreds ::= one_to_99 HUNDRED */
       case 93: /* hundreds ::= NUMBER HUNDRED */ yytestcase(yyruleno==93);
-#line 215 "parser.yy"
-{ yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; }
-#line 1669 "parser.c"
+#line 239 "parser.yy"
+{ yylhsminor.yy0.spos = mini(yymsp[-1].minor.yy0.spos, yymsp[0].minor.yy0.spos); yylhsminor.yy0.epos = maxi(yymsp[-1].minor.yy0.epos, yymsp[0].minor.yy0.epos); yylhsminor.yy0.double_value = yymsp[-1].minor.yy0.double_value * 100.0; }
+#line 1689 "parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 94: /* hundreds ::= HUNDRED */
-#line 217 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 100.0; }
-#line 1675 "parser.c"
+#line 241 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 100.0; }
+#line 1695 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 99: /* one_to_9 ::= ONE */
-#line 228 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1.0; }
-#line 1680 "parser.c"
+#line 252 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1.0; }
+#line 1701 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 100: /* one_to_9 ::= TWO */
-#line 229 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 2.0; }
-#line 1685 "parser.c"
+#line 253 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 2.0; }
+#line 1707 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 101: /* one_to_9 ::= THREE */
-#line 230 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 3.0; }
-#line 1690 "parser.c"
+#line 254 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 3.0; }
+#line 1713 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 102: /* one_to_9 ::= FOUR */
-#line 231 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 4.0; }
-#line 1695 "parser.c"
+#line 255 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 4.0; }
+#line 1719 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 103: /* one_to_9 ::= FIVE */
-#line 232 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 5.0; }
-#line 1700 "parser.c"
+#line 256 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 5.0; }
+#line 1725 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 104: /* one_to_9 ::= SIX */
-#line 233 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 6.0; }
-#line 1705 "parser.c"
+#line 257 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 6.0; }
+#line 1731 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 105: /* one_to_9 ::= SEVEN */
-#line 234 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 7.0; }
-#line 1710 "parser.c"
+#line 258 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 7.0; }
+#line 1737 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 106: /* one_to_9 ::= EIGHT */
-#line 235 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 8.0; }
-#line 1715 "parser.c"
+#line 259 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 8.0; }
+#line 1743 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 107: /* one_to_9 ::= NINE */
-#line 236 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 9.0; }
-#line 1720 "parser.c"
+#line 260 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 9.0; }
+#line 1749 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 108: /* ten_to_19 ::= TEN */
-#line 238 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 10.0; }
-#line 1725 "parser.c"
+#line 262 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 10.0; }
+#line 1755 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 109: /* ten_to_19 ::= ELEVEN */
-#line 239 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 11.0; }
-#line 1730 "parser.c"
+#line 263 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 11.0; }
+#line 1761 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 110: /* ten_to_19 ::= TWELVE */
-#line 240 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 12.0; }
-#line 1735 "parser.c"
+#line 264 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 12.0; }
+#line 1767 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 111: /* ten_to_19 ::= THIRTEEN */
-#line 241 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 13.0; }
-#line 1740 "parser.c"
+#line 265 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 13.0; }
+#line 1773 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 112: /* ten_to_19 ::= FOURTEEN */
-#line 242 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 14.0; }
-#line 1745 "parser.c"
+#line 266 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 14.0; }
+#line 1779 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 113: /* ten_to_19 ::= FIFTEEN */
-#line 243 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 15.0; }
-#line 1750 "parser.c"
+#line 267 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 15.0; }
+#line 1785 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 114: /* ten_to_19 ::= SIXTEEN */
-#line 244 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 16.0; }
-#line 1755 "parser.c"
+#line 268 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 16.0; }
+#line 1791 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 115: /* ten_to_19 ::= SEVENTEEN */
-#line 245 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 17.0; }
-#line 1760 "parser.c"
+#line 269 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 17.0; }
+#line 1797 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 116: /* ten_to_19 ::= EIGHTEEN */
-#line 246 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 18.0; }
-#line 1765 "parser.c"
+#line 270 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 18.0; }
+#line 1803 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 117: /* ten_to_19 ::= NINETEEN */
-#line 247 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 19.0; }
-#line 1770 "parser.c"
+#line 271 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 19.0; }
+#line 1809 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 118: /* tens ::= TWENTY */
-#line 249 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 20.0; }
-#line 1775 "parser.c"
+#line 273 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 20.0; }
+#line 1815 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 119: /* tens ::= THIRTY */
-#line 250 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 30.0; }
-#line 1780 "parser.c"
+#line 274 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 30.0; }
+#line 1821 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 120: /* tens ::= FORTY */
-#line 251 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 40.0; }
-#line 1785 "parser.c"
+#line 275 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 40.0; }
+#line 1827 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 121: /* tens ::= FIFTY */
-#line 252 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 50.0; }
-#line 1790 "parser.c"
+#line 276 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 50.0; }
+#line 1833 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 122: /* tens ::= SIXTY */
-#line 253 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 60.0; }
-#line 1795 "parser.c"
+#line 277 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 60.0; }
+#line 1839 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 123: /* tens ::= SEVENTY */
-#line 254 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 70.0; }
-#line 1800 "parser.c"
+#line 278 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 70.0; }
+#line 1845 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 124: /* tens ::= EIGHTY */
-#line 255 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 80.0; }
-#line 1805 "parser.c"
+#line 279 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 80.0; }
+#line 1851 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 125: /* tens ::= NINETY */
-#line 256 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 90.0; }
-#line 1810 "parser.c"
+#line 280 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 90.0; }
+#line 1857 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 126: /* first_to_9th ::= FIRST */
-#line 258 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1.0; yymsp[0].minor.yy0.suffix = ST; }
-#line 1815 "parser.c"
+#line 282 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1.0; yylhsminor.yy0.suffix = ST; }
+#line 1863 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 127: /* first_to_9th ::= FIRSTS */
-#line 259 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 1.0; yymsp[0].minor.yy0.suffix = STS; }
-#line 1820 "parser.c"
+#line 283 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 1.0; yylhsminor.yy0.suffix = STS; }
+#line 1869 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 128: /* first_to_9th ::= SECOND */
-#line 260 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 2.0; yymsp[0].minor.yy0.suffix = ND; }
-#line 1825 "parser.c"
+#line 284 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 2.0; yylhsminor.yy0.suffix = ND; }
+#line 1875 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 129: /* first_to_9th ::= SECONDS */
-#line 261 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 2.0; yymsp[0].minor.yy0.suffix = NDS; }
-#line 1830 "parser.c"
+#line 285 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 2.0; yylhsminor.yy0.suffix = NDS; }
+#line 1881 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 130: /* first_to_9th ::= THIRD */
-#line 262 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 3.0; yymsp[0].minor.yy0.suffix = RD; }
-#line 1835 "parser.c"
+#line 286 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 3.0; yylhsminor.yy0.suffix = RD; }
+#line 1887 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 131: /* first_to_9th ::= THIRDS */
-#line 263 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 3.0; yymsp[0].minor.yy0.suffix = RDS; }
-#line 1840 "parser.c"
+#line 287 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 3.0; yylhsminor.yy0.suffix = RDS; }
+#line 1893 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 132: /* first_to_9th ::= FOURTH */
-#line 264 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 4.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1845 "parser.c"
+#line 288 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 4.0; yylhsminor.yy0.suffix = TH; }
+#line 1899 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 133: /* first_to_9th ::= FOURTHS */
-#line 265 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 4.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1850 "parser.c"
+#line 289 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 4.0; yylhsminor.yy0.suffix = THS; }
+#line 1905 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 134: /* first_to_9th ::= FIFTH */
-#line 266 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 5.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1855 "parser.c"
+#line 290 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 5.0; yylhsminor.yy0.suffix = TH; }
+#line 1911 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 135: /* first_to_9th ::= FIFTHS */
-#line 267 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 5.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1860 "parser.c"
+#line 291 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 5.0; yylhsminor.yy0.suffix = THS; }
+#line 1917 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 136: /* first_to_9th ::= SIXTH */
-#line 268 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 6.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1865 "parser.c"
+#line 292 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 6.0; yylhsminor.yy0.suffix = TH; }
+#line 1923 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 137: /* first_to_9th ::= SIXTHS */
-#line 269 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 6.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1870 "parser.c"
+#line 293 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 6.0; yylhsminor.yy0.suffix = THS; }
+#line 1929 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 138: /* first_to_9th ::= SEVENTH */
-#line 270 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 7.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1875 "parser.c"
+#line 294 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 7.0; yylhsminor.yy0.suffix = TH; }
+#line 1935 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 139: /* first_to_9th ::= SEVENTHS */
-#line 271 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 7.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1880 "parser.c"
+#line 295 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 7.0; yylhsminor.yy0.suffix = THS; }
+#line 1941 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 140: /* first_to_9th ::= EIGHTH */
-#line 272 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 8.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1885 "parser.c"
+#line 296 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 8.0; yylhsminor.yy0.suffix = TH; }
+#line 1947 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 141: /* first_to_9th ::= EIGHTHS */
-#line 273 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 8.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1890 "parser.c"
+#line 297 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 8.0; yylhsminor.yy0.suffix = THS; }
+#line 1953 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 142: /* first_to_9th ::= NINTH */
-#line 274 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 9.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1895 "parser.c"
+#line 298 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 9.0; yylhsminor.yy0.suffix = TH; }
+#line 1959 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 143: /* first_to_9th ::= NINTHS */
-#line 275 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 9.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1900 "parser.c"
+#line 299 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 9.0; yylhsminor.yy0.suffix = THS; }
+#line 1965 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 144: /* tenth_to_19th ::= TENTH */
-#line 277 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 10.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1905 "parser.c"
+#line 301 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 10.0; yylhsminor.yy0.suffix = TH; }
+#line 1971 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 145: /* tenth_to_19th ::= TENTHS */
-#line 278 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 10.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1910 "parser.c"
+#line 302 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 10.0; yylhsminor.yy0.suffix = THS; }
+#line 1977 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 146: /* tenth_to_19th ::= ELEVENTH */
-#line 279 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 11.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1915 "parser.c"
+#line 303 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 11.0; yylhsminor.yy0.suffix = TH; }
+#line 1983 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 147: /* tenth_to_19th ::= ELEVENTHS */
-#line 280 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 11.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1920 "parser.c"
+#line 304 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 11.0; yylhsminor.yy0.suffix = THS; }
+#line 1989 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 148: /* tenth_to_19th ::= TWELFTH */
-#line 281 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 12.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1925 "parser.c"
+#line 305 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 12.0; yylhsminor.yy0.suffix = TH; }
+#line 1995 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 149: /* tenth_to_19th ::= TWELFTHS */
-#line 282 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 12.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1930 "parser.c"
+#line 306 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 12.0; yylhsminor.yy0.suffix = THS; }
+#line 2001 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 150: /* tenth_to_19th ::= THIRTEENTH */
-#line 283 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 13.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1935 "parser.c"
+#line 307 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 13.0; yylhsminor.yy0.suffix = TH; }
+#line 2007 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 151: /* tenth_to_19th ::= THIRTEENTHS */
-#line 284 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 13.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1940 "parser.c"
+#line 308 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 13.0; yylhsminor.yy0.suffix = THS; }
+#line 2013 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 152: /* tenth_to_19th ::= FOURTEENTH */
-#line 285 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 14.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1945 "parser.c"
+#line 309 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 14.0; yylhsminor.yy0.suffix = TH; }
+#line 2019 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 153: /* tenth_to_19th ::= FOURTEENTHS */
-#line 286 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 14.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1950 "parser.c"
+#line 310 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 14.0; yylhsminor.yy0.suffix = THS; }
+#line 2025 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 154: /* tenth_to_19th ::= FIFTEENTH */
-#line 287 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 15.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1955 "parser.c"
+#line 311 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 15.0; yylhsminor.yy0.suffix = TH; }
+#line 2031 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 155: /* tenth_to_19th ::= FIFTEENTHS */
-#line 288 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 15.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1960 "parser.c"
+#line 312 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 15.0; yylhsminor.yy0.suffix = THS; }
+#line 2037 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 156: /* tenth_to_19th ::= SIXTEENTH */
-#line 289 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 16.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1965 "parser.c"
+#line 313 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 16.0; yylhsminor.yy0.suffix = TH; }
+#line 2043 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 157: /* tenth_to_19th ::= SIXTEENTHS */
-#line 290 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 16.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1970 "parser.c"
+#line 314 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 16.0; yylhsminor.yy0.suffix = THS; }
+#line 2049 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 158: /* tenth_to_19th ::= SEVENTEENTH */
-#line 291 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 17.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1975 "parser.c"
+#line 315 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 17.0; yylhsminor.yy0.suffix = TH; }
+#line 2055 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 159: /* tenth_to_19th ::= SEVENTEENTHS */
-#line 292 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 17.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1980 "parser.c"
+#line 316 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 17.0; yylhsminor.yy0.suffix = THS; }
+#line 2061 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 160: /* tenth_to_19th ::= EIGHTEENTH */
-#line 293 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 18.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1985 "parser.c"
+#line 317 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 18.0; yylhsminor.yy0.suffix = TH; }
+#line 2067 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 161: /* tenth_to_19th ::= EIGHTEENTHS */
-#line 294 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 18.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 1990 "parser.c"
+#line 318 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 18.0; yylhsminor.yy0.suffix = THS; }
+#line 2073 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 162: /* tenth_to_19th ::= NINETEENTH */
-#line 295 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 19.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 1995 "parser.c"
+#line 319 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 19.0; yylhsminor.yy0.suffix = TH; }
+#line 2079 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 163: /* tenth_to_19th ::= NINETEENTHS */
-#line 296 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 19.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2000 "parser.c"
+#line 320 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 19.0; yylhsminor.yy0.suffix = THS; }
+#line 2085 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 164: /* tenths ::= TWENTIETH */
-#line 298 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 20.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2005 "parser.c"
+#line 322 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 20.0; yylhsminor.yy0.suffix = TH; }
+#line 2091 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 165: /* tenths ::= TWENTIETHS */
-#line 299 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 20.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2010 "parser.c"
+#line 323 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 20.0; yylhsminor.yy0.suffix = THS; }
+#line 2097 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 166: /* tenths ::= THIRTIETH */
-#line 300 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 30.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2015 "parser.c"
+#line 324 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 30.0; yylhsminor.yy0.suffix = TH; }
+#line 2103 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 167: /* tenths ::= THIRTIETHS */
-#line 301 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 30.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2020 "parser.c"
+#line 325 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 30.0; yylhsminor.yy0.suffix = THS; }
+#line 2109 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 168: /* tenths ::= FOURTIETH */
-#line 302 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 40.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2025 "parser.c"
+#line 326 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 40.0; yylhsminor.yy0.suffix = TH; }
+#line 2115 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 169: /* tenths ::= FOURTIETHS */
-#line 303 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 40.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2030 "parser.c"
+#line 327 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 40.0; yylhsminor.yy0.suffix = THS; }
+#line 2121 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 170: /* tenths ::= FIFTIETH */
-#line 304 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 50.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2035 "parser.c"
+#line 328 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 50.0; yylhsminor.yy0.suffix = TH; }
+#line 2127 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 171: /* tenths ::= FIFTIETHS */
-#line 305 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 50.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2040 "parser.c"
+#line 329 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 50.0; yylhsminor.yy0.suffix = THS; }
+#line 2133 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 172: /* tenths ::= SIXTIETH */
-#line 306 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 60.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2045 "parser.c"
+#line 330 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 60.0; yylhsminor.yy0.suffix = TH; }
+#line 2139 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 173: /* tenths ::= SIXTIETHS */
-#line 307 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 60.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2050 "parser.c"
+#line 331 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 60.0; yylhsminor.yy0.suffix = THS; }
+#line 2145 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 174: /* tenths ::= SEVENTIETH */
-#line 308 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 70.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2055 "parser.c"
+#line 332 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 70.0; yylhsminor.yy0.suffix = TH; }
+#line 2151 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 175: /* tenths ::= SEVENTIETHS */
-#line 309 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 70.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2060 "parser.c"
+#line 333 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 70.0; yylhsminor.yy0.suffix = THS; }
+#line 2157 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 176: /* tenths ::= EIGHTIETH */
-#line 310 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 80.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2065 "parser.c"
+#line 334 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 80.0; yylhsminor.yy0.suffix = TH; }
+#line 2163 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 177: /* tenths ::= EIGHTIETHS */
-#line 311 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 80.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2070 "parser.c"
+#line 335 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 80.0; yylhsminor.yy0.suffix = THS; }
+#line 2169 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 178: /* tenths ::= NINETIETH */
-#line 312 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 90.0; yymsp[0].minor.yy0.suffix = TH; }
-#line 2075 "parser.c"
+#line 336 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 90.0; yylhsminor.yy0.suffix = TH; }
+#line 2175 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 179: /* tenths ::= NINETIETHS */
-#line 313 "parser.yy"
-{ yymsp[0].minor.yy0.double_value = 90.0; yymsp[0].minor.yy0.suffix = THS; }
-#line 2080 "parser.c"
+#line 337 "parser.yy"
+{ yylhsminor.yy0.spos = yymsp[0].minor.yy0.spos; yylhsminor.yy0.epos = yymsp[0].minor.yy0.epos; yylhsminor.yy0.double_value = 90.0; yylhsminor.yy0.suffix = THS; }
+#line 2181 "parser.c"
+  yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       default:
       /* (180) expr ::= (OPTIMIZED OUT) */ assert(yyruleno!=180);
@@ -2122,10 +2224,10 @@ static void yy_parse_failed(
   /* Here code is inserted which will be executed whenever the
   ** parser fails */
 /************ Begin %parse_failure code ***************************************/
-#line 21 "parser.yy"
+#line 24 "parser.yy"
 
     fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-#line 2129 "parser.c"
+#line 2231 "parser.c"
 /************ End %parse_failure code *****************************************/
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
@@ -2142,10 +2244,10 @@ static void yy_syntax_error(
   ParseARG_FETCH;
 #define TOKEN yyminor
 /************ Begin %syntax_error code ****************************************/
-#line 17 "parser.yy"
+#line 20 "parser.yy"
 
     fprintf(stderr, "Syntax error\n");
-#line 2149 "parser.c"
+#line 2251 "parser.c"
 /************ End %syntax_error code ******************************************/
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }

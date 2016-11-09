@@ -30,10 +30,7 @@ void nDecimals(sds *s, double d, int n) {
 }
 
 void morphNumericString(sds *s, int n) {
-    char *p;
-    int count;
-
-    p = strchr(*s, '.');                    // Find decimal point, if any.
+    char *p = strchr(*s, '.');                    // Find decimal point, if any.
     if (p != NULL) {
         int dotPosition = (p - *s);
         int endRange = dotPosition + n;

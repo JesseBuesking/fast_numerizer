@@ -19,6 +19,11 @@ enum suffixValues
 typedef struct {
     double double_value;
     enum suffixValues suffix;
+    double frac_num;
+    double frac_denom;
+    unsigned int is_frac;
+    unsigned int spos;
+    unsigned int epos;
 } YYSTYPE;
 
 typedef struct {
