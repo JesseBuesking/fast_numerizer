@@ -17,57 +17,73 @@
 #define mini(a, b) (a < b ? a : b)
 }
 
-%syntax_error {
-    fprintf(stderr, "Syntax error\n");
-}
+%syntax_error { fprintf(stderr, "Syntax error\n"); }
 
-%parse_failure {
-    fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-}
+%parse_failure { fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n"); }
 
 %start_symbol program
 
 program ::= expr(A). {
-    printf("locations %d %d\n", A.spos, A.epos);
+    /*printf("locations %d %d\n", A.spos, A.epos);*/
 
-    doubleToString(&state->result, A.double_value, state->precision);
+    /*doubleToString(&state->result, A.double_value, state->precision);*/
 
-    switch (A.suffix) {
-        case ST:
-            state->result = sdscat(state->result, "st");
-            break;
-        case STS:
-            state->result = sdscat(state->result, "sts");
-            break;
-        case ND:
-            state->result = sdscat(state->result, "nd");
-            break;
-        case NDS:
-            state->result = sdscat(state->result, "nds");
-            break;
-        case RD:
-            state->result = sdscat(state->result, "rd");
-            break;
-        case RDS:
-            state->result = sdscat(state->result, "rds");
-            break;
-        case TH:
-            state->result = sdscat(state->result, "th");
-            break;
-        case THS:
-            state->result = sdscat(state->result, "ths");
-            break;
-    }
+    /*switch (A.suffix) {*/
+        /*case ST:*/
+            /*state->result = sdscat(state->result, "st");*/
+            /*break;*/
+        /*case STS:*/
+            /*state->result = sdscat(state->result, "sts");*/
+            /*break;*/
+        /*case ND:*/
+            /*state->result = sdscat(state->result, "nd");*/
+            /*break;*/
+        /*case NDS:*/
+            /*state->result = sdscat(state->result, "nds");*/
+            /*break;*/
+        /*case RD:*/
+            /*state->result = sdscat(state->result, "rd");*/
+            /*break;*/
+        /*case RDS:*/
+            /*state->result = sdscat(state->result, "rds");*/
+            /*break;*/
+        /*case TH:*/
+            /*state->result = sdscat(state->result, "th");*/
+            /*break;*/
+        /*case THS:*/
+            /*state->result = sdscat(state->result, "ths");*/
+            /*break;*/
+    /*}*/
 
-    state->result = sdsRemoveFreeSpace(state->result);
+    /*state->result = sdsRemoveFreeSpace(state->result);*/
 }
 
-expr(A) ::= sentence(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
-expr(A) ::= final_number(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
+expr ::= sentence.
+expr ::= final_number(A). {
+    insertYYSTYPE(&state->yystypeList, A);
+}
 expr ::= .
 
-sentence(A) ::= identifiers final_number(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
-sentence(A) ::= final_number(B) identifiers. { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
+sentence ::= final_number(A) identifiers final_number(B). {
+    insertYYSTYPE(&state->yystypeList, A);
+    insertYYSTYPE(&state->yystypeList, B);
+}
+sentence ::= identifiers final_number(A) identifiers final_number(B) identifiers. {
+    insertYYSTYPE(&state->yystypeList, A);
+    insertYYSTYPE(&state->yystypeList, B);
+}
+sentence ::= identifiers final_number(A) identifiers. {
+    insertYYSTYPE(&state->yystypeList, A);
+}
+sentence ::= identifiers final_number(A). {
+    insertYYSTYPE(&state->yystypeList, A);
+}
+sentence ::= final_number(A) identifiers. {
+    insertYYSTYPE(&state->yystypeList, A);
+}
+
+identifiers ::= identifiers CHARACTERS.
+identifiers ::= CHARACTERS.
 
 final_number(A) ::= one_to_999999999999999(B) AND_A QUARTER(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value + 0.25; }
 final_number(A) ::= one_to_999999999999999(B) QUARTERS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value / 4.0; }
@@ -335,6 +351,3 @@ tenths(A) ::= EIGHTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value =
 tenths(A) ::= EIGHTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0; A.suffix = THS; }
 tenths(A) ::= NINETIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = TH; }
 tenths(A) ::= NINETIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = THS; }
-
-identifiers ::= identifiers CHARACTERS.
-identifiers ::= CHARACTERS.

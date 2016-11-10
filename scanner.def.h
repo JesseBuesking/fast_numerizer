@@ -27,8 +27,19 @@ typedef struct {
 } YYSTYPE;
 
 typedef struct {
+    YYSTYPE *values;
+    size_t used;
+    size_t size;
+} YYSTYPEList;
+
+typedef struct {
     int precision;
     sds result;
+    YYSTYPEList yystypeList;
 } ParserState;
+
+void initYYSTYPEList(YYSTYPEList *l, size_t initialSize);
+void insertYYSTYPE(YYSTYPEList *l, YYSTYPE element);
+void freeYYSTYPElist(YYSTYPEList *l);
 
 #endif // SCANNER_DEF_H

@@ -30,7 +30,7 @@ FAST_NUMERIZER_LD=$(CC) $(FINAL_LDFLAGS)
 CSRC=parser.c read.c readfd.c readfp.c readmem.c readrand.c scan.c scan-dyn.c
 CHDR=read.h readfd.h readfp.h readmem.h readrand.h scan.h scan-dyn.h
 
-FAST_NUMERIZER_OBJ=parser.o scan.o readmem.o fast_numerizer.o scanner.o sds.o num-fmt.o
+FAST_NUMERIZER_OBJ=parser.o scan.o readmem.o fast_numerizer.o scanner.o sds.o num-fmt.o scanner.def.o
 DEPS=parser.h scan.h readmem.h fast_numerizer.h scanner.h
 
 TEST_FILES=test_basic.yaml

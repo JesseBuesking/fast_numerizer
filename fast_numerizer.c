@@ -1,4 +1,5 @@
 #include "fast_numerizer.h"
+#include "scanner.def.h"
 
 #define TOKEN_SEPARATOR 10000
 
@@ -7,6 +8,8 @@ void numerize(const char *data, ParserState *state) {
     scanstate ss;
     scanstate_init(&ss, NULL, 0);
     readmem_attach(&ss, data, strlen(data));
+
+    initYYSTYPEList(&state->yystypeList, 4);
 
     int tok;
     unsigned int start_pos = 0;
@@ -50,6 +53,11 @@ void numerize(const char *data, ParserState *state) {
             sscanf(value, "%lf", &yylval.double_value);
         }
 
+        /*TODO: if you cannot figure out how to get parser to work on full sentence:*/
+        /*1. return 0 instead of identifier*/
+        /*2. if tok is 0 and not at end of string, restart parser*/
+        /*3. set state.result to final value when done*/
+
         yylval.spos = start_pos;
         yylval.epos = yylval.spos + token_length;
         start_pos += token_length;
@@ -65,4 +73,13 @@ void numerize(const char *data, ParserState *state) {
 
     Parse(pParser, 0, yylval, state);
     ParseFree(pParser, free);
+
+    YYSTYPEList l = state->yystypeList;
+    printf("numbers: %d\n", l.used);
+    for (int i = 0; i < l.used; ++i) {
+        YYSTYPE y = l.values[i];
+        printf("spos: %d, epos: %d, value: %lf, suffix: %d\n", y.spos, y.epos, y.double_value, y.suffix);
+    }
+
+    freeYYSTYPElist(&state->yystypeList);
 }
