@@ -58,29 +58,20 @@ program ::= expr(A). {
     /*state->result = sdsRemoveFreeSpace(state->result);*/
 }
 
-expr ::= sentence.
-expr ::= final_number(A). {
-    insertYYSTYPE(&state->yystypeList, A);
-}
-expr ::= .
+expr ::= num_ident.
+expr ::= ident_num.
 
-sentence ::= final_number(A) identifiers final_number(B). {
-    insertYYSTYPE(&state->yystypeList, A);
-    insertYYSTYPE(&state->yystypeList, B);
-}
-sentence ::= identifiers final_number(A) identifiers final_number(B) identifiers. {
-    insertYYSTYPE(&state->yystypeList, A);
-    insertYYSTYPE(&state->yystypeList, B);
-}
-sentence ::= identifiers final_number(A) identifiers. {
+num_ident ::= final_number(A) ident_num. {
     insertYYSTYPE(&state->yystypeList, A);
 }
-sentence ::= identifiers final_number(A). {
+
+num_ident ::= final_number(A). {
     insertYYSTYPE(&state->yystypeList, A);
 }
-sentence ::= final_number(A) identifiers. {
-    insertYYSTYPE(&state->yystypeList, A);
-}
+
+
+ident_num ::= identifiers num_ident.
+ident_num ::= identifiers.
 
 identifiers ::= identifiers CHARACTERS.
 identifiers ::= CHARACTERS.
