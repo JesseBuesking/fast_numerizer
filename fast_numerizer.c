@@ -74,6 +74,8 @@ void numerize(const char *data, ParserState *state) {
     Parse(pParser, 0, yylval, state);
     ParseFree(pParser, free);
 
+    printf("For '%s', found:\n", data);
+
     YYSTYPEList l = state->yystypeList;
     printf("numbers: %d\n", l.used);
     for (int i = 0; i < l.used; ++i) {

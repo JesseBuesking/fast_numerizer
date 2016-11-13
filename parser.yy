@@ -70,6 +70,12 @@ num_ident ::= final_number(A). {
 }
 
 
+// ------------------------------------TODO------------------------------------
+// look into using rd, and flagging if rds is used (rd is not typically
+// used with fractions, but rds is)
+// ------------------------------------TODO------------------------------------
+
+
 ident_num ::= identifiers num_ident.
 ident_num ::= identifiers.
 
@@ -97,6 +103,9 @@ final_number(A) ::= ZERO(B). { A.spos = B.spos; A.epos = B.epos; A.double_value 
     /*A.double_value = B.double_value / C.double_value;*/
 /*}*/
 
+/*final_number ::= fraction.*/
+/*fraction ::= one_to_99 first_to_99th.*/
+
 /*fraction(A) ::= one_to_999999999999999(B) first_to_999999999999999th(C). {*/
     /*A.frac_num = B.double_value;*/
     /*A.frac_denom = C.double_value;*/
@@ -112,11 +121,12 @@ first_to_999999999999999th(A) ::= trillionths(B). { A.spos = B.spos; A.epos = B.
 first_to_999999999999999th(A) ::= first_to_999999999999th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
 trillionths(A) ::= one_to_999999999999(B) TRILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = TH; }
-trillionths(A) ::= one_to_999999999999(B) TRILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }
 trillionths(A) ::= NUMBER(B) TRILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = TH; }
-trillionths(A) ::= NUMBER(B) TRILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }
 trillionths(A) ::= TRILLIONTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000000.0; A.suffix = TH; }
-trillionths(A) ::= TRILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000000.0; A.suffix = THS; }
+
+/*trillionths(A) ::= one_to_999999999999(B) TRILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }*/
+/*trillionths(A) ::= NUMBER(B) TRILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000000.0; A.suffix = THS; }*/
+/*trillionths(A) ::= TRILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000000.0; A.suffix = THS; }*/
 
 /* --------------------------------------
 sub quadrillion regular
@@ -139,11 +149,12 @@ first_to_999999999999th(A) ::= billionths(B). { A.spos = B.spos; A.epos = B.epos
 first_to_999999999999th(A) ::= first_to_999999999th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
 billionths(A) ::= one_to_999999999(B) BILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = TH; }
-billionths(A) ::= one_to_999999999(B) BILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }
 billionths(A) ::= NUMBER(B) BILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = TH; }
-billionths(A) ::= NUMBER(B) BILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }
 billionths(A) ::= BILLIONTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000.0; A.suffix = TH; }
-billionths(A) ::= BILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000.0; A.suffix = THS; }
+
+/*billionths(A) ::= one_to_999999999(B) BILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }*/
+/*billionths(A) ::= NUMBER(B) BILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000000.0; A.suffix = THS; }*/
+/*billionths(A) ::= BILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000000.0; A.suffix = THS; }*/
 
 /* --------------------------------------
 sub trillion regular
@@ -166,11 +177,12 @@ first_to_999999999th(A) ::= millionths(B). { A.spos = B.spos; A.epos = B.epos; A
 first_to_999999999th(A) ::= first_to_999999th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
 millionths(A) ::= one_to_999999(B) MILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = TH; }
-millionths(A) ::= one_to_999999(B) MILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = THS; }
 millionths(A) ::= NUMBER(B) MILLIONTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = TH; }
-millionths(A) ::= NUMBER(B) MILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = THS; }
 millionths(A) ::= MILLIONTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000.0; A.suffix = TH; }
-millionths(A) ::= MILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000.0; A.suffix = THS; }
+
+/*millionths(A) ::= one_to_999999(B) MILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = THS; }*/
+/*millionths(A) ::= NUMBER(B) MILLIONTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000000.0; A.suffix = THS; }*/
+/*millionths(A) ::= MILLIONTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000000.0; A.suffix = THS; }*/
 
 /* --------------------------------------
 sub billion regular
@@ -193,11 +205,12 @@ first_to_999999th(A) ::= thousandths(B). { A.spos = B.spos; A.epos = B.epos; A.d
 first_to_999999th(A) ::= first_to_999th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
 thousandths(A) ::= one_to_999(B) THOUSANDTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = TH; }
-thousandths(A) ::= one_to_999(B) THOUSANDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = THS; }
 thousandths(A) ::= NUMBER(B) THOUSANDTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = TH; }
-thousandths(A) ::= NUMBER(B) THOUSANDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = THS; }
 thousandths(A) ::= THOUSANDTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000.0; A.suffix = TH; }
-thousandths(A) ::= THOUSANDTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000.0; A.suffix = THS; }
+
+/*thousandths(A) ::= one_to_999(B) THOUSANDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = THS; }*/
+/*thousandths(A) ::= NUMBER(B) THOUSANDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 1000.0; A.suffix = THS; }*/
+/*thousandths(A) ::= THOUSANDTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1000.0; A.suffix = THS; }*/
 
 /* --------------------------------------
 sub million regular
@@ -222,14 +235,15 @@ first_to_999th(A) ::= AND first_to_99th(B). { A.spos = B.spos; A.epos = B.epos; 
 first_to_999th(A) ::= first_to_99th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
 hundredths(A) ::= one_to_99(B) HUNDREDTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = TH; }
-hundredths(A) ::= one_to_99(B) HUNDREDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = THS; }
 hundredths(A) ::= NUMBER(B) HUNDREDTH(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = TH; }
-hundredths(A) ::= NUMBER(B) HUNDREDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = THS; }
 hundredths(A) ::= HUNDREDTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 100.0; A.suffix = TH; }
-hundredths(A) ::= HUNDREDTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 100.0; A.suffix = THS; }
+
+/*hundredths(A) ::= one_to_99(B) HUNDREDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = THS; }*/
+/*hundredths(A) ::= NUMBER(B) HUNDREDTHS(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value * 100.0; A.suffix = THS; }*/
+/*hundredths(A) ::= HUNDREDTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 100.0; A.suffix = THS; }*/
 
 first_to_99th(A) ::= tens(B) first_to_9th(C). { A.spos = mini(B.spos, C.spos); A.epos = maxi(B.epos, C.epos); A.double_value = B.double_value + C.double_value; A.suffix = C.suffix; }
-first_to_99th(A) ::= tenths(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
+first_to_99th(A) ::= tenth(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= tenth_to_19th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 first_to_99th(A) ::= first_to_9th(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; A.suffix = B.suffix; }
 
@@ -287,58 +301,61 @@ tens(A) ::= EIGHTY(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0
 tens(A) ::= NINETY(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; }
 
 first_to_9th(A) ::= FIRST(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1.0; A.suffix = ST; }
-first_to_9th(A) ::= FIRSTS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1.0; A.suffix = STS; }
 first_to_9th(A) ::= SECOND(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 2.0; A.suffix = ND; }
-first_to_9th(A) ::= SECONDS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 2.0; A.suffix = NDS; }
 first_to_9th(A) ::= THIRD(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 3.0; A.suffix = RD; }
-first_to_9th(A) ::= THIRDS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 3.0; A.suffix = RDS; }
 first_to_9th(A) ::= FOURTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 4.0; A.suffix = TH; }
-first_to_9th(A) ::= FOURTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 4.0; A.suffix = THS; }
 first_to_9th(A) ::= FIFTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 5.0; A.suffix = TH; }
-first_to_9th(A) ::= FIFTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 5.0; A.suffix = THS; }
 first_to_9th(A) ::= SIXTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 6.0; A.suffix = TH; }
-first_to_9th(A) ::= SIXTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 6.0; A.suffix = THS; }
 first_to_9th(A) ::= SEVENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 7.0; A.suffix = TH; }
-first_to_9th(A) ::= SEVENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 7.0; A.suffix = THS; }
 first_to_9th(A) ::= EIGHTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 8.0; A.suffix = TH; }
-first_to_9th(A) ::= EIGHTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 8.0; A.suffix = THS; }
 first_to_9th(A) ::= NINTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 9.0; A.suffix = TH; }
-first_to_9th(A) ::= NINTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 9.0; A.suffix = THS; }
 
 tenth_to_19th(A) ::= TENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 10.0; A.suffix = TH; }
-tenth_to_19th(A) ::= TENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 10.0; A.suffix = THS; }
 tenth_to_19th(A) ::= ELEVENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 11.0; A.suffix = TH; }
-tenth_to_19th(A) ::= ELEVENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 11.0; A.suffix = THS; }
 tenth_to_19th(A) ::= TWELFTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 12.0; A.suffix = TH; }
-tenth_to_19th(A) ::= TWELFTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 12.0; A.suffix = THS; }
 tenth_to_19th(A) ::= THIRTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 13.0; A.suffix = TH; }
-tenth_to_19th(A) ::= THIRTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 13.0; A.suffix = THS; }
 tenth_to_19th(A) ::= FOURTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 14.0; A.suffix = TH; }
-tenth_to_19th(A) ::= FOURTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 14.0; A.suffix = THS; }
 tenth_to_19th(A) ::= FIFTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 15.0; A.suffix = TH; }
-tenth_to_19th(A) ::= FIFTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 15.0; A.suffix = THS; }
 tenth_to_19th(A) ::= SIXTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 16.0; A.suffix = TH; }
-tenth_to_19th(A) ::= SIXTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 16.0; A.suffix = THS; }
 tenth_to_19th(A) ::= SEVENTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 17.0; A.suffix = TH; }
-tenth_to_19th(A) ::= SEVENTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 17.0; A.suffix = THS; }
 tenth_to_19th(A) ::= EIGHTEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 18.0; A.suffix = TH; }
-tenth_to_19th(A) ::= EIGHTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 18.0; A.suffix = THS; }
 tenth_to_19th(A) ::= NINETEENTH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 19.0; A.suffix = TH; }
-tenth_to_19th(A) ::= NINETEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 19.0; A.suffix = THS; }
 
-tenths(A) ::= TWENTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 20.0; A.suffix = TH; }
-tenths(A) ::= TWENTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 20.0; A.suffix = THS; }
-tenths(A) ::= THIRTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 30.0; A.suffix = TH; }
-tenths(A) ::= THIRTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 30.0; A.suffix = THS; }
-tenths(A) ::= FOURTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 40.0; A.suffix = TH; }
-tenths(A) ::= FOURTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 40.0; A.suffix = THS; }
-tenths(A) ::= FIFTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 50.0; A.suffix = TH; }
-tenths(A) ::= FIFTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 50.0; A.suffix = THS; }
-tenths(A) ::= SIXTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 60.0; A.suffix = TH; }
-tenths(A) ::= SIXTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 60.0; A.suffix = THS; }
-tenths(A) ::= SEVENTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 70.0; A.suffix = TH; }
-tenths(A) ::= SEVENTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 70.0; A.suffix = THS; }
-tenths(A) ::= EIGHTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0; A.suffix = TH; }
-tenths(A) ::= EIGHTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0; A.suffix = THS; }
-tenths(A) ::= NINETIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = TH; }
-tenths(A) ::= NINETIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = THS; }
+tenth(A) ::= TWENTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 20.0; A.suffix = TH; }
+tenth(A) ::= THIRTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 30.0; A.suffix = TH; }
+tenth(A) ::= FOURTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 40.0; A.suffix = TH; }
+tenth(A) ::= FIFTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 50.0; A.suffix = TH; }
+tenth(A) ::= SIXTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 60.0; A.suffix = TH; }
+tenth(A) ::= SEVENTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 70.0; A.suffix = TH; }
+tenth(A) ::= EIGHTIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0; A.suffix = TH; }
+tenth(A) ::= NINETIETH(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = TH; }
+
+/*first_to_9ths(A) ::= FIRSTS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 1.0; A.suffix = STS; }*/
+/*first_to_9ths(A) ::= SECONDS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 2.0; A.suffix = NDS; }*/
+/*first_to_9ths(A) ::= THIRDS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 3.0; A.suffix = RDS; }*/
+/*first_to_9ths(A) ::= FOURTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 4.0; A.suffix = THS; }*/
+/*first_to_9ths(A) ::= FIFTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 5.0; A.suffix = THS; }*/
+/*first_to_9ths(A) ::= SIXTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 6.0; A.suffix = THS; }*/
+/*first_to_9ths(A) ::= SEVENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 7.0; A.suffix = THS; }*/
+/*first_to_9ths(A) ::= EIGHTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 8.0; A.suffix = THS; }*/
+/*first_to_9ths(A) ::= NINTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 9.0; A.suffix = THS; }*/
+
+/*tenth_to_19ths(A) ::= TENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 10.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= ELEVENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 11.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= TWELFTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 12.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= THIRTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 13.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= FOURTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 14.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= FIFTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 15.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= SIXTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 16.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= SEVENTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 17.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= EIGHTEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 18.0; A.suffix = THS; }*/
+/*tenth_to_19ths(A) ::= NINETEENTHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 19.0; A.suffix = THS; }*/
+
+/*tenths(A) ::= TWENTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 20.0; A.suffix = THS; }*/
+/*tenths(A) ::= THIRTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 30.0; A.suffix = THS; }*/
+/*tenths(A) ::= FOURTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 40.0; A.suffix = THS; }*/
+/*tenths(A) ::= FIFTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 50.0; A.suffix = THS; }*/
+/*tenths(A) ::= SIXTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 60.0; A.suffix = THS; }*/
+/*tenths(A) ::= SEVENTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 70.0; A.suffix = THS; }*/
+/*tenths(A) ::= EIGHTIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 80.0; A.suffix = THS; }*/
+/*tenths(A) ::= NINETIETHS(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 90.0; A.suffix = THS; }*/
