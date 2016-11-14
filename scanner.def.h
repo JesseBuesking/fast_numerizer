@@ -22,6 +22,11 @@ enum errors {
     PARSE_FAILURE
 };
 
+enum parse_options {
+    NO_OPTIONS = 0,
+    PARSE_SECOND = 1 << 0
+};
+
 typedef struct {
     double double_value;
     enum suffixValues suffix;
@@ -43,6 +48,7 @@ typedef struct {
     sds result;
     enum errors error;
     YYSTYPEList yystypeList;
+    enum parse_options options;
 } ParserState;
 
 void initYYSTYPEList(YYSTYPEList *l, size_t initialSize);

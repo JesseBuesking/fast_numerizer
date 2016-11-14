@@ -94,6 +94,9 @@ void numerize(const char *data, ParserState *state) {
         printf("token is %s at %d - %d\n", value, yylval.spos, yylval.epos);
         sdsfree(value);
 #endif
+        if (tok == TOKEN_SECOND && (state->options & PARSE_SECOND) == 0) {
+            continue;
+        }
 
         if (tok != TOKEN_SEPARATOR && (last_tok == -1 || last_tok != TOKEN_CHARACTERS)) {
             Parse(pParser, tok, yylval, state);
