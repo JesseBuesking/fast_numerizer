@@ -57,6 +57,7 @@ void numerize(const char *data, ParserState *state) {
 #if debug
     ParseTrace(stderr, (char*)"[Parser] >> ");
 #endif
+    unsigned int last_tok = -1;
 
     do
     {
@@ -93,11 +94,12 @@ void numerize(const char *data, ParserState *state) {
 
         /*printf("token is %s at %d - %d\n", value, yylval.spos, yylval.epos);*/
 
-        if (tok != TOKEN_SEPARATOR) {
+        if (tok != TOKEN_SEPARATOR && (last_tok == -1 || last_tok != TOKEN_CHARACTERS)) {
             Parse(pParser, tok, yylval, state);
         }
 
         sdsfree(value);
+        last_tok = tok;
     } while (tok);
 
     Parse(pParser, 0, yylval, state);
