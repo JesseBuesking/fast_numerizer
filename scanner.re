@@ -13,7 +13,9 @@ int numerizer_start(scanstate *ss) {
         END             = "\x00";
         //CHARS         = [^ \r\n\t\f\-\x00]+; // not a separator
         CHARS           = [^]; // not a separator
-        NUMBER          = [0-9\.]+;
+        // see http://re2c.org/examples/example_07.html for ideas of other valid
+        // types of numbers
+        NUMBER          = ([0-9]* "." [0-9]+) | ([0-9]+);
         THREE_PART_DATE = [0-9]{2,4} "/" [0-9]{2,4} "/" [0-9]{2,4};
         TWO_PART_DATE   = [0-9]+ "/" [0-9]+;
 
