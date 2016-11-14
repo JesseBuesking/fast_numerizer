@@ -10,16 +10,19 @@ int main() {
     /*const char *data = "twentyone-thousand";*/
     /*const char *data = "nine hundred and ninety nine";*/
     /*const char *data = "hundredth";*/
+    /*const char *data = "one eighth";*/
     /*const char *data = "I am thirty three years old, third beans.";*/
-    const char *data = "one eighth";
+    const char *data = "05/06";
 
     ParserState state;
     state.precision = 3;
 
+    printf("Input: '%s'\n", data);
+
     numerize(data, &state);
 
-    /*printf("RESULT: %s\n", state.result);*/
+    printf("Output: '%s'\n", state.result);
 
-    /*sdsfree(state.result);*/
+    sdsfree(state.result);
     return 0;
 }

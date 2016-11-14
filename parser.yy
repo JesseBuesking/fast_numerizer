@@ -17,9 +17,19 @@
 #define mini(a, b) (a < b ? a : b)
 }
 
-%syntax_error { fprintf(stderr, "Syntax error\n"); }
+%syntax_error {
+    state->error = SYNTAX_ERROR;
+#if print_errors
+    fprintf(stderr, "Syntax error\n");
+#endif
+}
 
-%parse_failure { fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n"); }
+%parse_failure {
+    state->error = PARSE_FAILURE;
+#if print_errors
+    fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
+#endif
+}
 
 %start_symbol program
 
@@ -93,6 +103,7 @@ final_number(A) ::= first_to_999999999999999th(B). { A.spos = B.spos; A.epos = B
     /*A.frac_denom = B.double_value;*/
     /*A.is_frac = B.is_frac;*/
 /*}*/
+/*final_number(A) ::= NUMBER(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; }*/
 final_number(A) ::= ZERO(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 0.0; }
 
 /*final_number(A) ::= one_to_999999999999999(B) AND fraction(C). {*/

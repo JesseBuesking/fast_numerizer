@@ -27,3 +27,16 @@ void freeYYSTYPElist(YYSTYPEList *l) {
     free(l->values);
     //l->values = NULL;
 }
+
+int compare(const void* a, const void* b) {
+     YYSTYPE yya = * ( (YYSTYPE*) a );
+     YYSTYPE yyb = * ( (YYSTYPE*) b );
+
+     if ( yya.spos == yyb.spos ) return 0;
+     else if ( yya.spos < yyb.spos ) return -1;
+     else return 1;
+}
+
+void sortYYSTYPElist(YYSTYPEList *l) {
+    qsort(l->values, l->used, sizeof(YYSTYPE), compare);
+}

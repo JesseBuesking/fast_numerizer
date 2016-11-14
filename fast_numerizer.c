@@ -1,7 +1,41 @@
 #include "fast_numerizer.h"
 #include "scanner.def.h"
+#include "num-fmt.h"
 
 #define TOKEN_SEPARATOR 10000
+
+void yystypeToString(sds *s, YYSTYPE A, int precision) {
+    doubleToString(s, A.double_value, precision);
+
+    switch (A.suffix) {
+        case ST:
+            *s = sdscat(*s, "st");
+            break;
+        case STS:
+            *s = sdscat(*s, "sts");
+            break;
+        case ND:
+            *s = sdscat(*s, "nd");
+            break;
+        case NDS:
+            *s = sdscat(*s, "nds");
+            break;
+        case RD:
+            *s = sdscat(*s, "rd");
+            break;
+        case RDS:
+            *s = sdscat(*s, "rds");
+            break;
+        case TH:
+            *s = sdscat(*s, "th");
+            break;
+        case THS:
+            *s = sdscat(*s, "ths");
+            break;
+    }
+
+    *s = sdsRemoveFreeSpace(*s);
+}
 
 void numerize(const char *data, ParserState *state) {
     YYSTYPE yylval;
@@ -53,11 +87,6 @@ void numerize(const char *data, ParserState *state) {
             sscanf(value, "%lf", &yylval.double_value);
         }
 
-        /*TODO: if you cannot figure out how to get parser to work on full sentence:*/
-        /*1. return 0 instead of identifier*/
-        /*2. if tok is 0 and not at end of string, restart parser*/
-        /*3. set state.result to final value when done*/
-
         yylval.spos = start_pos;
         yylval.epos = yylval.spos + token_length;
         start_pos += token_length;
@@ -74,13 +103,46 @@ void numerize(const char *data, ParserState *state) {
     Parse(pParser, 0, yylval, state);
     ParseFree(pParser, free);
 
-    printf("For '%s', found:\n", data);
-
     YYSTYPEList l = state->yystypeList;
+#if debug
     printf("numbers: %d\n", l.used);
-    for (int i = 0; i < l.used; ++i) {
-        YYSTYPE y = l.values[i];
-        printf("spos: %d, epos: %d, value: %lf, suffix: %d\n", y.spos, y.epos, y.double_value, y.suffix);
+#endif
+
+    sortYYSTYPElist(&l);
+
+    if (l.used == 0) {
+        state->result = sdsnew(data);
+    } else {
+        state->result = sdsempty();
+        sds original = sdsnew(data);
+
+        int lastpos = 0;
+        for (int i = 0; i < l.used; ++i) {
+            YYSTYPE y = l.values[i];
+#if debug
+            printf("spos: %d, epos: %d, value: %lf, suffix: %d\n", y.spos, y.epos, y.double_value, y.suffix);
+#endif
+
+            if (lastpos < y.spos) {
+                sds tmp = sdsdup(original);
+                sdsrange(tmp, lastpos, y.spos - 1);
+                state->result = sdscatsds(state->result, tmp);
+                sdsfree(tmp);
+            }
+            lastpos = y.epos;
+
+            sds s;
+            yystypeToString(&s, y, 3);
+            state->result = sdscatsds(state->result, s);
+
+            sdsfree(s);
+        }
+
+        sds tmp = sdsdup(original);
+        sdsrange(tmp, l.values[l.used-1].epos, -1);
+        state->result = sdscatsds(state->result, tmp);
+        sdsfree(tmp);
+        sdsfree(original);
     }
 
     freeYYSTYPElist(&state->yystypeList);

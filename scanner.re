@@ -14,6 +14,7 @@ int numerizer_start(scanstate *ss) {
         //CHARS     = [^ \r\n\t\f\-\x00]+; // not a separator
         CHARS     = [^]; // not a separator
         NUMBER     = [0-9\.]+;
+        //DATE     = [0-9]+\/[0-9]+\/[0-9]+;
 
         NUMBER { return TOKEN_NUMBER; }
 
@@ -52,10 +53,15 @@ int numerizer_start(scanstate *ss) {
         'eighty' { return TOKEN_EIGHTY; }
         'ninety' { return TOKEN_NINETY; }
 
+        'a hundred' { return TOKEN_HUNDRED; }
         'hundred' { return TOKEN_HUNDRED; }
+        'a thousand' { return TOKEN_THOUSAND; }
         'thousand' { return TOKEN_THOUSAND; }
+        'a million' { return TOKEN_MILLION; }
         'million' { return TOKEN_MILLION; }
+        'a billion' { return TOKEN_BILLION; }
         'billion' { return TOKEN_BILLION; }
+        'a trillion' { return TOKEN_TRILLION; }
         'trillion' { return TOKEN_TRILLION; }
 
         'first' { return TOKEN_FIRST; }
@@ -139,6 +145,7 @@ int numerizer_start(scanstate *ss) {
         //'halves' { return TOKEN_HALVES; }
 
         //SEPARATOR { goto std; }
+        //DATE { return TOKEN_CHARACTERS; }
         SEPARATOR { return TOKEN_SEPARATOR; }
 
         END { return 0; }

@@ -5,7 +5,7 @@
 
 enum suffixValues
 {
-    NONE,
+    NO_SUFFIX,
     ST,
     STS,
     ND,
@@ -14,6 +14,12 @@ enum suffixValues
     RDS,
     TH,
     THS
+};
+
+enum errors {
+    NO_ERROR,
+    SYNTAX_ERROR,
+    PARSE_FAILURE
 };
 
 typedef struct {
@@ -35,11 +41,13 @@ typedef struct {
 typedef struct {
     int precision;
     sds result;
+    enum errors error;
     YYSTYPEList yystypeList;
 } ParserState;
 
 void initYYSTYPEList(YYSTYPEList *l, size_t initialSize);
 void insertYYSTYPE(YYSTYPEList *l, YYSTYPE element);
 void freeYYSTYPElist(YYSTYPEList *l);
+void sortYYSTYPElist(YYSTYPEList *l);
 
 #endif // SCANNER_DEF_H
