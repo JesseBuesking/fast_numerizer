@@ -9,13 +9,16 @@ int numerizer_start(scanstate *ss) {
     scanner_enter(ss);
 //std:
     /*!re2c
-        SEPARATOR = [ \r\n\t\f\-]+;
-        END       = "\x00";
-        //CHARS     = [^ \r\n\t\f\-\x00]+; // not a separator
-        CHARS     = [^]; // not a separator
-        NUMBER     = [0-9\.]+;
-        //DATE     = [0-9]+\/[0-9]+\/[0-9]+;
+        SEPARATOR       = [ \r\n\t\f\-]+;
+        END             = "\x00";
+        //CHARS         = [^ \r\n\t\f\-\x00]+; // not a separator
+        CHARS           = [^]; // not a separator
+        NUMBER          = [0-9\.]+;
+        THREE_PART_DATE = [0-9]{2,4} "/" [0-9]{2,4} "/" [0-9]{2,4};
+        TWO_PART_DATE   = [0-9]+ "/" [0-9]+;
 
+        THREE_PART_DATE { return TOKEN_CHARACTERS; }
+        TWO_PART_DATE { return TOKEN_CHARACTERS; }
         NUMBER { return TOKEN_NUMBER; }
 
         'and' { return TOKEN_AND; }
@@ -145,7 +148,6 @@ int numerizer_start(scanstate *ss) {
         //'halves' { return TOKEN_HALVES; }
 
         //SEPARATOR { goto std; }
-        //DATE { return TOKEN_CHARACTERS; }
         SEPARATOR { return TOKEN_SEPARATOR; }
 
         END { return 0; }

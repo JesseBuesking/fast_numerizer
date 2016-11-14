@@ -8,6 +8,8 @@ void yystypeToString(sds *s, YYSTYPE A, int precision) {
     doubleToString(s, A.double_value, precision);
 
     switch (A.suffix) {
+        case NO_SUFFIX:
+            break;
         case ST:
             *s = sdscat(*s, "st");
             break;
@@ -57,7 +59,7 @@ void numerize(const char *data, ParserState *state) {
 #if debug
     ParseTrace(stderr, (char*)"[Parser] >> ");
 #endif
-    unsigned int last_tok = -1;
+    int last_tok = -1;
 
     do
     {
@@ -77,28 +79,26 @@ void numerize(const char *data, ParserState *state) {
 
         token_length = scan_token_length(&ss);
 
-        // set the underlying value
-        sds value = sdsnewlen(ss.token, token_length);
-
-#if debug
-        printf("token is \"%s\"\n", value);
-#endif
-
         if (tok == TOKEN_NUMBER) {
+            sds value = sdsnewlen(ss.token, token_length);
             sscanf(value, "%lf", &yylval.double_value);
+            sdsfree(value);
         }
 
         yylval.spos = start_pos;
         yylval.epos = yylval.spos + token_length;
         start_pos += token_length;
 
-        /*printf("token is %s at %d - %d\n", value, yylval.spos, yylval.epos);*/
+#if debug
+        sds value = sdsnewlen(ss.token, token_length);
+        printf("token is %s at %d - %d\n", value, yylval.spos, yylval.epos);
+        sdsfree(value);
+#endif
 
         if (tok != TOKEN_SEPARATOR && (last_tok == -1 || last_tok != TOKEN_CHARACTERS)) {
             Parse(pParser, tok, yylval, state);
         }
 
-        sdsfree(value);
         last_tok = tok;
     } while (tok);
 
@@ -118,8 +118,8 @@ void numerize(const char *data, ParserState *state) {
         state->result = sdsempty();
         sds original = sdsnew(data);
 
-        int lastpos = 0;
-        for (int i = 0; i < l.used; ++i) {
+        unsigned int lastpos = 0;
+        for (unsigned int i = 0; i < l.used; ++i) {
             YYSTYPE y = l.values[i];
 #if debug
             printf("spos: %d, epos: %d, value: %lf, suffix: %d\n", y.spos, y.epos, y.double_value, y.suffix);

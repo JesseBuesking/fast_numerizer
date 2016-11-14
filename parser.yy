@@ -103,6 +103,10 @@ final_number(A) ::= first_to_999999999999999th(B). { A.spos = B.spos; A.epos = B
     /*A.frac_denom = B.double_value;*/
     /*A.is_frac = B.is_frac;*/
 /*}*/
+
+// should have this, but if it's not being used in a larger number, we should
+// keep it as is: it might be 007. if we dont keep it, we'll reduce it to 7,
+// when really we should keep it as is
 /*final_number(A) ::= NUMBER(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = B.double_value; }*/
 final_number(A) ::= ZERO(B). { A.spos = B.spos; A.epos = B.epos; A.double_value = 0.0; }
 

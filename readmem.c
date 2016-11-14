@@ -19,7 +19,7 @@
 /** Returns EOF because we're out of data.
  */
 
-static ssize_t readmem_read(scanstate *ss)
+static ssize_t readmem_read(__attribute__((unused))scanstate *ss)
 {
     return 0;
 }
