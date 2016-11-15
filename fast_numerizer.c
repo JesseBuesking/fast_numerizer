@@ -122,7 +122,8 @@ void numerize(const char *data, ParserState *state) {
         sds original = sdsnew(data);
 
         unsigned int lastpos = 0;
-        for (unsigned int i = 0; i < l.used; ++i) {
+        unsigned int i = 0;
+        for (i = 0; i < l.used; ++i) {
             YYSTYPE y = l.values[i];
 #if debug
             printf("spos: %d, epos: %d, value: %lf, suffix: %d\n", y.spos, y.epos, y.double_value, y.suffix);
