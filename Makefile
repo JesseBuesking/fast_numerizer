@@ -22,7 +22,7 @@ OPT=$(OPTIMIZATION)
 FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG)
 FINAL_LDFLAGS=$(LDFLAGS) $(DEBUG)
 FINAL_LIBS=
-DEBUG=-g -ggdb -Dprint_errors# -Ddebug
+DEBUG=-g -ggdb -Dprint_errors -Ddebug
 
 FAST_NUMERIZER_CC=$(CC) $(FINAL_CFLAGS)
 FAST_NUMERIZER_LD=$(CC) $(FINAL_LDFLAGS)
@@ -33,7 +33,7 @@ CHDR=read.h readfd.h readfp.h readmem.h readrand.h scan.h scan-dyn.h
 FAST_NUMERIZER_OBJ=parser.o scan.o readmem.o fast_numerizer.o scanner.o sds.o num-fmt.o scanner.def.o
 DEPS=parser.h scan.h readmem.h fast_numerizer.h scanner.h
 
-TEST_FILES=test_basic.yaml
+TEST_FILES=test/test_basic.yaml
 
 %.o: %.c $(DEPS)
 	$(FAST_NUMERIZER_CC) -c $<
@@ -56,18 +56,18 @@ scanner.c: scanner.re
 	$(RE2C) -o $@ scanner.re
 
 clean:
-	rm -rf *.o parser.h parser.out parser.c scanner.o scanner.c main.o fast_numerizer *.gch test_fast_numerizer
+	rm -rf *.o test/*.o parser.h parser.out parser.c scanner.o scanner.c main.o fast_numerizer *.gch test/test_fast_numerizer
 
 .PHONY: all clean
 
-test_fast_numerizer.o: parser.h scan.h readmem.h fast_numerizer.h scanner.h test_fast_numerizer.c
-	$(CXX) -std=c++11 -L/usr/local/include -I$(GTEST_DIR)/include -c test_fast_numerizer.c -lyaml-cpp
+test/test_fast_numerizer.o: parser.h scan.h readmem.h fast_numerizer.h scanner.h test/test_fast_numerizer.c
+	$(CXX) -std=c++11 -L/usr/local/include -I$(GTEST_DIR)/include -c test/test_fast_numerizer.c -o $@ -lyaml-cpp
 
-test_fast_numerizer: $(FAST_NUMERIZER_OBJ) $(GTEST_DIR)/make/gtest_main.a test_fast_numerizer.o
+test/test_fast_numerizer: $(FAST_NUMERIZER_OBJ) $(GTEST_DIR)/make/gtest_main.a test/test_fast_numerizer.o
 	$(CXX) -std=c++11 -L/usr/local/include -o $@ -I$(GTEST_DIR)/include -I. $^ -pthread -lyaml-cpp
 
-test: all test_fast_numerizer $(TEST_FILES)
-	./test_fast_numerizer
+test: all test/test_fast_numerizer $(TEST_FILES)
+	cd test && ./test_fast_numerizer
 
 valgrind:
 	$(MAKE) OPTIMIZATION="-O0" MALLOC="libc"

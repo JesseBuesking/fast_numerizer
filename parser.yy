@@ -33,58 +33,20 @@
 
 %start_symbol program
 
-program ::= expr(A). {
-    /*printf("locations %d %d\n", A.spos, A.epos);*/
-
-    /*doubleToString(&state->result, A.double_value, state->precision);*/
-
-    /*switch (A.suffix) {*/
-        /*case ST:*/
-            /*state->result = sdscat(state->result, "st");*/
-            /*break;*/
-        /*case STS:*/
-            /*state->result = sdscat(state->result, "sts");*/
-            /*break;*/
-        /*case ND:*/
-            /*state->result = sdscat(state->result, "nd");*/
-            /*break;*/
-        /*case NDS:*/
-            /*state->result = sdscat(state->result, "nds");*/
-            /*break;*/
-        /*case RD:*/
-            /*state->result = sdscat(state->result, "rd");*/
-            /*break;*/
-        /*case RDS:*/
-            /*state->result = sdscat(state->result, "rds");*/
-            /*break;*/
-        /*case TH:*/
-            /*state->result = sdscat(state->result, "th");*/
-            /*break;*/
-        /*case THS:*/
-            /*state->result = sdscat(state->result, "ths");*/
-            /*break;*/
-    /*}*/
-
-    /*state->result = sdsRemoveFreeSpace(state->result);*/
-}
-
-expr ::= num_ident.
-expr ::= ident_num.
-
-num_ident ::= final_number(A) ident_num. {
-    insertYYSTYPE(&state->yystypeList, A);
-}
-
-num_ident ::= final_number(A). {
-    insertYYSTYPE(&state->yystypeList, A);
-}
-
-
 // ------------------------------------TODO------------------------------------
 // look into using rd, and flagging if rds is used (rd is not typically
 // used with fractions, but rds is)
 // ------------------------------------TODO------------------------------------
 
+program ::= num_ident.
+program ::= ident_num.
+
+number ::= final_number(A). {
+    insertYYSTYPE(&state->yystypeList, A);
+}
+
+num_ident ::= number ident_num.
+num_ident ::= number.
 
 ident_num ::= identifiers num_ident.
 ident_num ::= identifiers.
