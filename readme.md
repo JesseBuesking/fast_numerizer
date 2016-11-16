@@ -18,6 +18,6 @@ https://github.com/jduff/numerizer in c using re2c and lemon
 
 ## TODOS:
 
-[] Negatives
-[] Fractions
-[] Back-to-back numbers
+[ ] Negatives
+[ ] Fractions
+[ ] Back-to-back numbers
