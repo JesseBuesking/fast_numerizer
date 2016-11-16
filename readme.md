@@ -16,6 +16,7 @@ https://github.com/jduff/numerizer in c using re2c and lemon
 2. Install re2c
 3. make
 
-
 ## TODOS:
-[] Add support for negatives.
+[] Negatives
+[] Fractions
+[] Back-to-back numbers

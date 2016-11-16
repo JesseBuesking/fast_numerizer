@@ -21,11 +21,7 @@ void insertYYSTYPE(YYSTYPEList *l, YYSTYPE element) {
 }
 
 void freeYYSTYPElist(YYSTYPEList *l) {
-    /*for (int i = 0; i < l->used; ++i) {*/
-        /*free(l->values[i]);*/
-    /*}*/
     free(l->values);
-    //l->values = NULL;
 }
 
 int compare(const void* a, const void* b) {

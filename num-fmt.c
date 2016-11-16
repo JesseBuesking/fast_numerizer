@@ -2,6 +2,10 @@
 #include <string.h>
 #include "sds.h"
 
+/*
+ * From http://stackoverflow.com/a/277810/435460, but converted to use sds.
+ */
+
 void nDecimals(sds *s, double d, int n) {
     int sz; double d2;
 
