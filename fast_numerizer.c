@@ -110,7 +110,7 @@ void numerize(const char *data, ParserState *state) {
 
     YYSTYPEList l = state->yystypeList;
 #if debug
-    printf("numbers: %d\n", l.used);
+    printf("numbers: %zu\n", l.used);
 #endif
 
     sortYYSTYPElist(&l);

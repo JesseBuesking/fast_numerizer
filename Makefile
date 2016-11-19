@@ -1,5 +1,9 @@
 LEMON=~/repositories/lemon/lemon
+# I installed via apt
 RE2C=re2c
+# I pulled the file from http://www.hwaci.com/sw/mkhdr/makeheaders.c here, then
+# ran `gcc makeheaders.c -o makeheaders`
+MAKEHEADERS=~/repositories/makeheaders/makeheaders
 
 $(CC)=gcc
 $(CXX)=g++
@@ -44,9 +48,14 @@ fast_numerizer: $(FAST_NUMERIZER_OBJ) main.o
 	$(FAST_NUMERIZER_LD) $^ -o $@ $(FINAL_LIBS)
 	./fast_numerizer
 
-parser.h: parser.yy
-	# produces parser.c and parser.h
-	$(LEMON) parser.yy
+parser.c: parser.yy
+	# produces parser.c
+	$(LEMON) -m parser.yy
+
+parser.h: parser.c
+	$(MAKEHEADERS) parser.c
+	# add missing defines required by methods in parser.h
+	sed -i "2i #include <stdio.h>\n#ifndef YYMALLOCARGTYPE\n# define YYMALLOCARGTYPE size_t\n#endif" parser.h
 
 parser.o: parser.h
 	# produces parser.o
