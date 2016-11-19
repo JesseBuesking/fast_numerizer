@@ -39,11 +39,11 @@ void yystypeToString(sds *s, YYSTYPE A, int precision) {
     *s = sdsRemoveFreeSpace(*s);
 }
 
-void numerize(const char *data, ParserState *state) {
+void numerize(const char *data, size_t data_len, ParserState *state) {
     YYSTYPE yylval;
     scanstate ss;
     scanstate_init(&ss, NULL, 0);
-    readmem_attach(&ss, data, strlen(data));
+    readmem_attach(&ss, data, data_len);
 
     initYYSTYPEList(&state->yystypeList, 4);
 

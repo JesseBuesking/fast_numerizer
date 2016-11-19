@@ -7,6 +7,6 @@
 #include "sds.h"
 #include "parser.h"
 
-void numerize(const char *data, ParserState *state);
+void numerize(const char *data, size_t data_len, ParserState *state);
 
 #endif // FAST_NUMERIZER_H

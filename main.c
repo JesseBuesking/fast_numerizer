@@ -20,7 +20,7 @@ int main() {
 
     printf("Input: '%s'\n", data);
 
-    numerize(data, &state);
+    numerize(data, strlen(data), &state);
 
     printf("Output: '%s'\n", state.result);
 

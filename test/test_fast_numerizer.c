@@ -43,7 +43,7 @@ TEST_P(FastNumerizer, numerize) {
     const char* input = GetParam().input.c_str();
     const char* expect = GetParam().expect.c_str();
 
-    numerize(input, &state);
+    numerize(input, strlen(input), &state);
 
     ASSERT_TRUE(strcmp(expect, state.result) == 0) << "expected \"" << expect << "\" given \"" << input << "\", actual \"" << state.result << "\"\n";
 
