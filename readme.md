@@ -18,7 +18,8 @@ https://github.com/jduff/numerizer in c using re2c and lemon
 
 ## TODOS:
 
+- [ ] Test for thread safety & make thread safe
+- [ ] Back-to-back numbers
+- [ ] Reuse sds, but "grow" to max size between, if over DEFAULT_SIZE
 - [ ] Negatives
 - [ ] Fractions
-- [ ] Back-to-back numbers
-- [ ] Reuse sds, but "grow" to max size between if over
