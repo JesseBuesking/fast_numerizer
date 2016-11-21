@@ -1,4 +1,4 @@
-# fast_numerizer
+#  fast_numerizer
 
 https://github.com/jduff/numerizer in c using re2c and lemon
 
@@ -18,8 +18,13 @@ https://github.com/jduff/numerizer in c using re2c and lemon
 
 ## TODOS:
 
-- [ ] Test for thread safety & make thread safe
+- [x] Test for thread safety & make thread safe
+    - not needed for ruby since it has the global lock
 - [ ] Back-to-back numbers
 - [ ] Reuse sds, but "grow" to max size between, if over DEFAULT_SIZE
 - [ ] Negatives
 - [ ] Fractions
+
+Performance related:
+- [ ] For faster parsing of strings with lots of numbers, sdscatprinf (sdscatprintf -> vsnprintf -> vfprintf -> \_\_printf_fp -> hack_digit)
+- [ ] For faster parsing of strings with fewer numbers numerizer_start and Parse (probably grammar)

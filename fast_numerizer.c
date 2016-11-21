@@ -150,7 +150,12 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
 
             yystypeToString(&numberHolder, y, 3);
             state->result = sdscatsds(state->result, numberHolder);
+
             sdsclear(numberHolder);
+            // in case the last string was exceptionally large, free up memory
+            if (sdslen(numberHolder) > 512) {
+                sdsRemoveFreeSpace(numberHolder);
+            }
         }
 
         sds tmp = sdsdup(original);
