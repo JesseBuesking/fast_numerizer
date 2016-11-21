@@ -35,8 +35,6 @@ void yystypeToString(sds *s, YYSTYPE A, int precision) {
             *s = sdscat(*s, "ths");
             break;
     }
-
-    *s = sdsRemoveFreeSpace(*s);
 }
 
 void *pParser;
@@ -132,6 +130,8 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
 
         unsigned int lastpos = 0;
         unsigned int i = 0;
+        sds s = sdsempty();
+
         for (i = 0; i < l.used; ++i) {
             YYSTYPE y = l.values[i];
 #if debug
@@ -146,12 +146,12 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
             }
             lastpos = y.epos;
 
-            sds s;
             yystypeToString(&s, y, 3);
             state->result = sdscatsds(state->result, s);
-
-            sdsfree(s);
+            sdsclear(s);
         }
+
+        sdsfree(s);
 
         sds tmp = sdsdup(original);
         sdsrange(tmp, l.values[l.used-1].epos, -1);

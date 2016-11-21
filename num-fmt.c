@@ -30,7 +30,7 @@ void nDecimals(sds *s, double d, int n) {
 
     // Create format string then use it.
     /*sprintf(s, "%*.*f", sz, n, d);*/
-    *s = sdscatprintf(sdsempty(), "%*.*f", sz, n, d);
+    *s = sdscatprintf(*s, "%*.*f", sz, n, d);
 }
 
 void morphNumericString(sds *s, int n) {

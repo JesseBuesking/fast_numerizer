@@ -15,7 +15,7 @@ int main() {
     /*const char *data = "Today is 27 Oct 2006 7:30am and I love it. One is the best.";*/
     const char *data_one = "one two three four five";
     const char *data_two = "one hundred";
-    const char *data_three = "two hundred";
+    const char *data_three = "two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello ";
     int i = 0;
 
     ParserState state;
@@ -26,13 +26,14 @@ int main() {
 
     for (i = 0; i < 1000; i++) {
         const char *data;
-        if (i % 3 == 0) {
-            data = data_one;
-        } else if (i % 3 == 1) {
-            data = data_two;
-        } else if (i % 3 == 2) {
-            data = data_three;
-        }
+        /*if (i % 3 == 0) {*/
+            /*data = data_one;*/
+        /*} else if (i % 3 == 1) {*/
+            /*data = data_two;*/
+        /*} else if (i % 3 == 2) {*/
+            /*data = data_three;*/
+        /*}*/
+        data = data_three;
 
         /*printf("Input: '%s'\n", data);*/
 
