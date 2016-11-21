@@ -18,6 +18,8 @@ int main() {
     const char *data_three = "two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello two hundred hello ";
     int i = 0;
 
+    initFastNumerizer();
+
     ParserState state;
     initParserState(&state);
 
@@ -45,7 +47,7 @@ int main() {
     }
 
     freeParserState(&state);
-    cleanup();
+    freeFastNumerizer();
 
     return 0;
 }

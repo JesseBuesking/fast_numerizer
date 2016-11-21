@@ -38,11 +38,18 @@ void yystypeToString(sds *s, YYSTYPE A, int precision) {
 }
 
 void *pParser;
+sds numberHolder;
 
-void cleanup(void) {
+void initFastNumerizer(void) {
+    numberHolder = sdsempty();
+    pParser = ParseAlloc(malloc);
+}
+
+void freeFastNumerizer(void) {
     if (pParser!=NULL) {
         ParseFree(pParser, free);
     }
+    sdsfree(numberHolder);
 }
 
 void numerize(const char *data, size_t data_len, ParserState *state) {
@@ -54,10 +61,6 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
     int tok;
     unsigned int start_pos = 0;
     unsigned int token_length = 0;
-
-    if (pParser==NULL) {
-        pParser = ParseAlloc(malloc);
-    }
 
 	// Initialize the scanner to read from this string constant.
     readmem_init_str(&ss, data);
@@ -130,7 +133,6 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
 
         unsigned int lastpos = 0;
         unsigned int i = 0;
-        sds s = sdsempty();
 
         for (i = 0; i < l.used; ++i) {
             YYSTYPE y = l.values[i];
@@ -146,12 +148,10 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
             }
             lastpos = y.epos;
 
-            yystypeToString(&s, y, 3);
-            state->result = sdscatsds(state->result, s);
-            sdsclear(s);
+            yystypeToString(&numberHolder, y, 3);
+            state->result = sdscatsds(state->result, numberHolder);
+            sdsclear(numberHolder);
         }
-
-        sdsfree(s);
 
         sds tmp = sdsdup(original);
         sdsrange(tmp, l.values[l.used-1].epos, -1);

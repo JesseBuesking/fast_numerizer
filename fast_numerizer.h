@@ -7,7 +7,8 @@
 #include "sds.h"
 #include "parser.h"
 
-void cleanup(void);
+void initFastNumerizer(void);
+void freeFastNumerizer(void);
 void numerize(const char *data, size_t data_len, ParserState *state);
 
 #endif // FAST_NUMERIZER_H
