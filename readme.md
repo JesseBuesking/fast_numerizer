@@ -21,3 +21,4 @@ https://github.com/jduff/numerizer in c using re2c and lemon
 - [ ] Negatives
 - [ ] Fractions
 - [ ] Back-to-back numbers
+- [ ] Reuse sds, but "grow" to max size between if over

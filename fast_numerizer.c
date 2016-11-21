@@ -39,18 +39,27 @@ void yystypeToString(sds *s, YYSTYPE A, int precision) {
     *s = sdsRemoveFreeSpace(*s);
 }
 
+void *pParser;
+
+void cleanup(void) {
+    if (pParser!=NULL) {
+        ParseFree(pParser, free);
+    }
+}
+
 void numerize(const char *data, size_t data_len, ParserState *state) {
     YYSTYPE yylval;
     scanstate ss;
     scanstate_init(&ss, NULL, 0);
     readmem_attach(&ss, data, data_len);
 
-    initYYSTYPEList(&state->yystypeList, 4);
-
     int tok;
     unsigned int start_pos = 0;
     unsigned int token_length = 0;
-    void *pParser = ParseAlloc(malloc);
+
+    if (pParser==NULL) {
+        pParser = ParseAlloc(malloc);
+    }
 
 	// Initialize the scanner to read from this string constant.
     readmem_init_str(&ss, data);
@@ -106,7 +115,7 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
     } while (tok);
 
     Parse(pParser, 0, yylval, state);
-    ParseFree(pParser, free);
+    ParseReset(pParser);
 
     YYSTYPEList l = state->yystypeList;
 #if debug
@@ -150,6 +159,4 @@ void numerize(const char *data, size_t data_len, ParserState *state) {
         sdsfree(tmp);
         sdsfree(original);
     }
-
-    freeYYSTYPElist(&state->yystypeList);
 }

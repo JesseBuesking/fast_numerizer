@@ -13,17 +13,38 @@ int main() {
     /*const char *data = "one eighth";*/
     /*const char *data = "I am thirty three years old, third beans.";*/
     /*const char *data = "Today is 27 Oct 2006 7:30am and I love it. One is the best.";*/
-    const char *data = "one two three four five";
+    const char *data_one = "one two three four five";
+    const char *data_two = "one hundred";
+    const char *data_three = "two hundred";
+    int i = 0;
 
     ParserState state;
-    state.precision = 3;
+    initParserState(&state);
 
-    printf("Input: '%s'\n", data);
+    /*// TODO set precision by passed in value*/
+    /*state.precision = 3;*/
 
-    numerize(data, strlen(data), &state);
+    for (i = 0; i < 1000; i++) {
+        const char *data;
+        if (i % 3 == 0) {
+            data = data_one;
+        } else if (i % 3 == 1) {
+            data = data_two;
+        } else if (i % 3 == 2) {
+            data = data_three;
+        }
 
-    printf("Output: '%s'\n", state.result);
+        /*printf("Input: '%s'\n", data);*/
 
-    sdsfree(state.result);
+        numerize(data, strlen(data), &state);
+
+        /*printf("Output: '%s'\n", state.result);*/
+
+        resetParserState(&state);
+    }
+
+    freeParserState(&state);
+    cleanup();
+
     return 0;
 }

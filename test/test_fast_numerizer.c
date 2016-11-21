@@ -38,7 +38,7 @@ class FastNumerizer : public testing::TestWithParam<TestCase> {};
 
 TEST_P(FastNumerizer, numerize) {
     ParserState state;
-    state.precision = GetParam().precision;
+    initParserState(&state);
 
     const char* input = GetParam().input.c_str();
     const char* expect = GetParam().expect.c_str();
@@ -47,7 +47,7 @@ TEST_P(FastNumerizer, numerize) {
 
     ASSERT_TRUE(strcmp(expect, state.result) == 0) << "expected \"" << expect << "\" given \"" << input << "\", actual \"" << state.result << "\"\n";
 
-    sdsfree(state.result);
+    freeParserState(&state);
 }
 
 std::vector<TestCase> ReadTestCasesFromDisk(std::string filename) {
