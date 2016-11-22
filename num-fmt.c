@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "sds.h"
+#include "fpconv.h"
 
 /*
  * From http://stackoverflow.com/a/277810/435460, but converted to use sds.
@@ -28,9 +29,15 @@ void nDecimals(sds *s, double d, int n) {
 
     sz += 1 + n;
 
+    /*char buf[24 + 1];*/
+    /*int str_len = fpconv_dtoa(d, n, buf);*/
+    /*printf("%d\n", str_len);*/
+    /*buf[str_len] = '\0';*/
+    /*printf("fpconv_dtoa: %s\n", buf);*/
+
     // Create format string then use it.
-    /*sprintf(s, "%*.*f", sz, n, d);*/
     *s = sdscatprintf(*s, "%*.*f", sz, n, d);
+    /*printf("sdscatprintf: %s\n", *s);*/
 }
 
 void morphNumericString(sds *s, int n) {
